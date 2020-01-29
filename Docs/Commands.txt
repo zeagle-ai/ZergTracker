@@ -1,0 +1,5 @@
+﻿enable-migrations -enableautomaticmigrations
+
+update-database
+
+Update-Database -TargetMigration:0  "Doesn't blow the whole thing away" May add -force
