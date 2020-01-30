@@ -170,10 +170,25 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProjectsController.cs" />
+    <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\TicketAttachmentsController.cs" />
+    <Compile Include="Controllers\TicketCommentsController.cs" />
+    <Compile Include="Controllers\TicketHistoriesController.cs" />
+    <Compile Include="Controllers\TicketNotificationsController.cs" />
+    <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\UserRolesHelper.cs" />
+    <Compile Include="Migrations\202001302104528_firsttime.cs" />
+    <Compile Include="Migrations\202001302104528_firsttime.Designer.cs">
+      <DependentUpon>202001302104528_firsttime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001302105442_secondtime.cs" />
+    <Compile Include="Migrations\202001302105442_secondtime.Designer.cs">
+      <DependentUpon>202001302105442_secondtime.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -247,12 +262,43 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Projects\Create.cshtml" />
+    <Content Include="Views\Projects\Delete.cshtml" />
+    <Content Include="Views\Projects\Details.cshtml" />
+    <Content Include="Views\Projects\Edit.cshtml" />
+    <Content Include="Views\Projects\Index.cshtml" />
+    <Content Include="Views\Tickets\Create.cshtml" />
+    <Content Include="Views\Tickets\Delete.cshtml" />
+    <Content Include="Views\Tickets\Details.cshtml" />
+    <Content Include="Views\Tickets\Edit.cshtml" />
+    <Content Include="Views\Tickets\Index.cshtml" />
+    <Content Include="Views\TicketAttachments\Create.cshtml" />
+    <Content Include="Views\TicketAttachments\Delete.cshtml" />
+    <Content Include="Views\TicketAttachments\Details.cshtml" />
+    <Content Include="Views\TicketAttachments\Edit.cshtml" />
+    <Content Include="Views\TicketAttachments\Index.cshtml" />
+    <Content Include="Views\TicketComments\Create.cshtml" />
+    <Content Include="Views\TicketComments\Delete.cshtml" />
+    <Content Include="Views\TicketComments\Details.cshtml" />
+    <Content Include="Views\TicketComments\Edit.cshtml" />
+    <Content Include="Views\TicketComments\Index.cshtml" />
+    <Content Include="Views\TicketHistories\Create.cshtml" />
+    <Content Include="Views\TicketHistories\Delete.cshtml" />
+    <Content Include="Views\TicketHistories\Details.cshtml" />
+    <Content Include="Views\TicketHistories\Edit.cshtml" />
+    <Content Include="Views\TicketHistories\Index.cshtml" />
+    <Content Include="Views\TicketNotifications\Create.cshtml" />
+    <Content Include="Views\TicketNotifications\Delete.cshtml" />
+    <Content Include="Views\TicketNotifications\Details.cshtml" />
+    <Content Include="Views\TicketNotifications\Edit.cshtml" />
+    <Content Include="Views\TicketNotifications\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Assets\css\" />
     <Folder Include="Assets\img\" />
     <Folder Include="Assets\js\" />
+    <Folder Include="Views\Roles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -266,6 +312,14 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202001302104528_firsttime.resx">
+      <DependentUpon>202001302104528_firsttime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001302105442_secondtime.resx">
+      <DependentUpon>202001302105442_secondtime.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
