@@ -18,7 +18,7 @@ namespace ZergTracker.Controllers
             return View();
         }
 
-        // POST: Roles
+        // POST: Assign Roles
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AssignUserRole(string userId, string roleId)
@@ -31,6 +31,21 @@ namespace ZergTracker.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }        
+        }
+
+        // POST: Assign Roles
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RemoveUserRole(string userId, string roleId)
+        {
+            if (helper.RemoveUserFromRole(userId, roleId))
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
         }
     }
 }
