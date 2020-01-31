@@ -5,47 +5,46 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ZergTracker.Helper;
+using ZergTracker.Models;
+using ZergTracker.Models.ViewModels;
 
 namespace ZergTracker.Controllers
 {
     public class RolesController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         private UserRolesHelper helper = new UserRolesHelper();
+        private PersonnelViewModel model = new PersonnelViewModel();
 
         // GET: Roles
-        public ActionResult Index()
+        public ActionResult Personnel()
         {
-            return View();
+            model.UserId = new SelectList(db.Users, "Id", "FirstName");
+            model.RoleName = new SelectList(db.Roles, "Name", "Name");
+            model.UserRoles = db.Users.ToList();
+
+            return View(model);
         }
 
         // POST: Assign Roles
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AssignUserRole(string userId, string roleId)
+        public ActionResult ChangeUserRole(string userId, string roleId, bool add)
         {
-            if (helper.AddUserToRole(userId, roleId))
+            if (!helper.IsUserInRole(userId, roleId) && add)
             {
-                return RedirectToAction("Index");
+                helper.AddUserToRole(userId, roleId);
+                return RedirectToAction("Personnel");
             }
+            else if (helper.IsUserInRole(userId, roleId) && !add)
+            {
+                helper.RemoveUserFromRole(userId, roleId);
+                return RedirectToAction("Personnel");
+            } 
             else
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }        
-        }
-
-        // POST: Assign Roles
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult RemoveUserRole(string userId, string roleId)
-        {
-            if (helper.RemoveUserFromRole(userId, roleId))
-            {
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            }      
         }
     }
 }
