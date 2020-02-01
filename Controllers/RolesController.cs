@@ -14,13 +14,12 @@ namespace ZergTracker.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private UserRolesHelper helper = new UserRolesHelper();
-        private PersonnelViewModel model = new PersonnelViewModel();
 
         // GET: Roles
-        public ActionResult Personnel()
+        public ActionResult Personnel(PersonnelViewModel model)
         {
             model.UserId = new SelectList(db.Users, "Id", "FirstName");
-            model.RoleName = new SelectList(db.Roles, "Name", "Name");
+            model.RoleName = new MultiSelectList(db.Roles, "Name", "Name");
             model.UserRoles = db.Users.ToList();
 
             return View(model);
@@ -29,22 +28,29 @@ namespace ZergTracker.Controllers
         // POST: Assign Roles
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangeUserRole(string userId, string roleId, bool add)
+        public ActionResult ChangeUserRole(string userId, List<string> roleName, bool add)
         {
-            if (!helper.IsUserInRole(userId, roleId) && add)
+            if (add)
             {
-                helper.AddUserToRole(userId, roleId);
-                return RedirectToAction("Personnel");
+                foreach (string role in roleName)
+                {
+                    if (!helper.IsUserInRole(userId, role))
+                    {
+                        helper.AddUserToRole(userId, role);
+                    }
+                }
             }
-            else if (helper.IsUserInRole(userId, roleId) && !add)
+            else 
             {
-                helper.RemoveUserFromRole(userId, roleId);
+                foreach (var role in roleName)
+                {
+                    if (helper.IsUserInRole(userId, role))
+                    {
+                        helper.RemoveUserFromRole(userId, role);
+                    }
+                }
+            }
                 return RedirectToAction("Personnel");
-            } 
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }      
         }
     }
 }

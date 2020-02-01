@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -7,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ZergTracker.Models;
+using ZergTracker.Models.ViewModels;
 
 namespace ZergTracker.Controllers
 {
@@ -15,8 +17,31 @@ namespace ZergTracker.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Projects
-        public ActionResult Index()
+        public ActionResult Projects()
         {
+            if (User.IsInRole("Admin"))
+            {
+                return View(db.Projects.ToList());
+            }
+            else if (User.IsInRole("ProjectManager"))
+            {
+                var userId = User.Identity.GetUserId();
+
+                var model = db.Projects.Where(p => p.ProjectManagerId == userId).ToList();
+
+                return View(model);
+            }
+            else if (User.IsInRole("Developer") || User.IsInRole("Submitter"))
+            { 
+                var userId = User.Identity.GetUserId();
+
+                var user = db.Users.Find(userId);
+
+                var model = user.Projects.ToList();
+
+                return View(model);
+            }
+
             return View(db.Projects.ToList());
         }
 

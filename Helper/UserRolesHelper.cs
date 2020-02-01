@@ -15,14 +15,10 @@ namespace ZergTracker.Helper
 
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        // Single Mx's
         public bool IsUserInRole(string userId, string roleName)
         {
             return userManager.IsInRole(userId, roleName);
-        }
-
-        public ICollection<string> ListUserRoles(string userId)
-        {
-            return userManager.GetRoles(userId);
         }
 
         public bool AddUserToRole(string userId, string roleName)
@@ -35,6 +31,12 @@ namespace ZergTracker.Helper
         {
             var result = userManager.RemoveFromRole(userId, roleName);
             return result.Succeeded;
+        }
+
+        //Multi Mx's
+        public ICollection<string> ListUserRoles(string userId)
+        {
+            return userManager.GetRoles(userId);
         }
 
         public ICollection<ApplicationUser> UsersInRole(string roleName)

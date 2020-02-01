@@ -1,0 +1,94 @@
+﻿@model ZergTracker.Models.ViewModels.PersonnelViewModel
+
+@using ZergTracker.Helper
+@{ var userHelper = new UserRolesHelper();}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Zerg Tracker</a></li>
+                    <li class="breadcrumb-item active">Personnel</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<div class="content-wrapper">
+    @Html.BeginForm("ChangeUserRole", "Roles", FormMethod.Post, new { @class = "form group", role = "form" })
+    {
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card card-default">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h4>Manage User Roles</h4>
+                    </div>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span>Users</span>
+                            @Html.DropDownListFor(u => u.UserId, null, new { @class = "form-control select2", style = "width: 100%;" })
+                        </div>
+                        <div class="col-md-6">
+                            <span>Roles</span>
+                            @Html.ListBoxFor(r => r.RoleName, null, new { @class = "form-control select2", style = "width: 100%;" })
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span>Hold Control down to select multiple roles.</span>
+                    <button class="btn btn-primary float-right" name="add" value="false" type="submit">Remove</button>
+                    <button class="btn btn-primary float-right" name="add" value="true" type="submit" style="margin-right: 5px">Add</button>
+                </div>
+            </div>
+        </div>
+    }
+    <!-- Add new beginform for projects controller and add the add/emove methods to Proj Controller -->
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Users and Roles</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="user-role" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Role(s)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.UserRoles)
+                            {
+                                <tr>
+                                    <td>
+                                        <p>@item.FirstName &nbsp; @item.LastName</p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            @foreach (var role in userHelper.ListUserRoles(item.Id))
+                                            {@role; <br />}
+                                    </p>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
