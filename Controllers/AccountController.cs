@@ -178,7 +178,7 @@ namespace ZergTracker.Controllers
                     Random random = new Random();
                     int num = random.Next(1, 4);
 
-                    model.ProfilePic = "/assets/img/default/defualt-profile-pic-" + num + ".png";
+                    model.ProfilePic = "/assets/img/defaults/default-profile-pic-" + num + ".png";
                 }
                 else if (ImageUploadValidator.IsWebFriendlyImage(image))
                 {

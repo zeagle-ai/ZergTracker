@@ -14,6 +14,7 @@
 </section>
 
 <div class="content-wrapper">
+    <div class="container">
     <div class="card-columns">
         @if (User.IsInRole("Admin"))
         {
@@ -34,7 +35,7 @@
                         <span>Users</span>
                         @Html.DropDownListFor(u => u.UserId, null, new { @class = "form-control", style = "width: 100%;" })
                         <span>Roles</span>
-                        @Html.ListBoxFor(r => r.RoleName, null, new { @class = "form-control select2 select-bs4", style = "width: 100%;" })
+                        @Html.ListBoxFor(r => r.RoleName, null, new { @class = "form-control select2", style = "width: 100%;" })
                     </div>
                     <div class="card-footer">
                         <button class="btn btn-primary float-right" name="add" value="false" type="submit">Remove</button>
@@ -114,6 +115,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </div>
     }
