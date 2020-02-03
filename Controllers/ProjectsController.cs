@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using ZergTracker.Helper;
 using ZergTracker.Models;
 using ZergTracker.Models.ViewModels;
 
@@ -15,9 +16,10 @@ namespace ZergTracker.Controllers
     public class ProjectsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private UserProjectsHelper helper = new UserProjectsHelper();
 
-        // GET: Projects
-        public ActionResult Projects()
+        // GET: Projects/Index
+        public ActionResult Index()
         {
             if (User.IsInRole("Admin"))
             {
@@ -42,7 +44,33 @@ namespace ZergTracker.Controllers
                 return View(model);
             }
 
-            return View(db.Projects.ToList());
+                return View(db.Projects.ToList());
+        }
+
+        public ActionResult Personnel(PersonnelViewModel model)
+        {
+            model.UserId = new SelectList(db.Users, "Id", "FirstName");
+            model.ProjectId = new SelectList(db.Projects, "Id", "Name");
+
+            return View(model);
+        }
+
+        // Change User Projects
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, ProjectManager")]
+        public ActionResult ChangeUserProjects(string userId, int projectId, bool add)
+        {
+            //do i need another check to go to badrequest
+            if (add)
+            {
+                helper.AddUserToProject(userId, projectId);
+            }
+            else
+            {
+                helper.RemoveUserFromProject(userId, projectId);
+            }
+            return RedirectToAction("Personnel", "Roles");
         }
 
         // GET: Projects/Details/5
@@ -61,6 +89,7 @@ namespace ZergTracker.Controllers
         }
 
         // GET: Projects/Create
+        [Authorize(Roles ="Admin, ProjectManager")]
         public ActionResult Create()
         {
             return View();
@@ -71,6 +100,7 @@ namespace ZergTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult Create([Bind(Include = "Id,Name,ProjectManagerId")] Project project)
         {
             if (ModelState.IsValid)
@@ -84,6 +114,7 @@ namespace ZergTracker.Controllers
         }
 
         // GET: Projects/Edit/5
+        [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -103,6 +134,7 @@ namespace ZergTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult Edit([Bind(Include = "Id,Name,ProjectManagerId")] Project project)
         {
             if (ModelState.IsValid)
@@ -115,6 +147,7 @@ namespace ZergTracker.Controllers
         }
 
         // GET: Projects/Delete/5
+        [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -132,6 +165,7 @@ namespace ZergTracker.Controllers
         // POST: Projects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult DeleteConfirmed(int id)
         {
             Project project = db.Projects.Find(id);

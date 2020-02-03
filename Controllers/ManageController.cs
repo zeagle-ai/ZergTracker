@@ -15,6 +15,7 @@ namespace ZergTracker.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public ManageController()
         {
@@ -67,6 +68,7 @@ namespace ZergTracker.Controllers
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
+                ProfilePic = db.Users.FirstOrDefault(u => u.Id == userId).ProfilePic,
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
@@ -218,6 +220,41 @@ namespace ZergTracker.Controllers
         public ActionResult ChangePassword()
         {
             return View();
+        }
+
+        // GET: /Manage/ChangeName
+        public ActionResult ChangeName()
+        {
+            return View();
+        }
+
+        //POST: /Mange/ChangeName
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeName(ChangeNameViewModel model)
+        {
+            
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            ApplicationDbContext db = new ApplicationDbContext();
+
+            var user = db.Users.Find(User.Identity.GetUserId());
+
+            if (model.NewFirstName != null)
+            {
+                user.FirstName = model.NewFirstName;
+            }
+            if (model.NewLastName != null)
+            {
+                user.LastName = model.NewLastName;
+            }
+
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         //

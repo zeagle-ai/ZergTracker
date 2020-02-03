@@ -13,14 +13,31 @@ namespace ZergTracker.Controllers
     public class RolesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        private UserRolesHelper helper = new UserRolesHelper();
+        private UserRolesHelper rolesHelper = new UserRolesHelper();
+        private UserProjectsHelper projHelper = new UserProjectsHelper();
 
         // GET: Roles
-        public ActionResult Personnel(PersonnelViewModel model)
+        public ActionResult Personnel()
         {
+            PersonnelViewModel model = new PersonnelViewModel();
             model.UserId = new SelectList(db.Users, "Id", "FirstName");
             model.RoleName = new MultiSelectList(db.Roles, "Name", "Name");
-            model.UserRoles = db.Users.ToList();
+            model.ProjectId = new SelectList(db.Projects, "Id", "Name");
+            var userTitles = new List<ApplicationUserTitles>();
+            model.UserTitles = userTitles;
+
+            var userList = db.Users.ToList();
+
+            foreach (var user in userList)
+            {
+                ApplicationUserTitles personnel = new ApplicationUserTitles();
+                personnel.FirstName = user.FirstName;
+                personnel.LastName = user.LastName;
+                personnel.RoleNameStrings = rolesHelper.ListUserRoles(user.Id);
+                personnel.ProjectNameStrings = projHelper.ListUserProjects(user.Id);
+
+                userTitles.Add(personnel);
+            }
 
             return View(model);
         }
@@ -28,15 +45,16 @@ namespace ZergTracker.Controllers
         // POST: Assign Roles
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult ChangeUserRole(string userId, List<string> roleName, bool add)
         {
             if (add)
             {
                 foreach (string role in roleName)
                 {
-                    if (!helper.IsUserInRole(userId, role))
+                    if (!rolesHelper.IsUserInRole(userId, role))
                     {
-                        helper.AddUserToRole(userId, role);
+                        rolesHelper.AddUserToRole(userId, role);
                     }
                 }
             }
@@ -44,13 +62,22 @@ namespace ZergTracker.Controllers
             {
                 foreach (var role in roleName)
                 {
-                    if (helper.IsUserInRole(userId, role))
+                    if (rolesHelper.IsUserInRole(userId, role))
                     {
-                        helper.RemoveUserFromRole(userId, role);
+                        rolesHelper.RemoveUserFromRole(userId, role);
                     }
                 }
             }
                 return RedirectToAction("Personnel");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

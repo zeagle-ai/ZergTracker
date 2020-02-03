@@ -32,6 +32,13 @@
     <link rel="stylesheet" href="~/assets/css/summernote-bs4.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <!-- Data Tables -->
+    <link rel="stylesheet" href="~/assets/css/dataTables.bootstrap4.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="~/assets/css/select2.min.css">
+    <link rel="stylesheet" href="~/assets/css/select2-bootstrap4.min.css">
+
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -170,14 +177,15 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                @*<div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
                         <img src="~/assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
                         <a href="#" class="d-block">Josh Patterson</a>
                     </div>
-                </div>
+                </div>*@
+                @Html.Action("UserProfileInfo", "Account")
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
@@ -243,7 +251,7 @@
     <script src="~/assets/js/jquery-ui.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
-  $.widget.bridge('uibutton', $.ui.button)
+        $.widget.bridge('uibutton', $.ui.button)
     </script>
     <!-- Bootstrap 4 -->
     <script src="~/assets/js/bootstrap.bundle.min.js"></script>
@@ -267,6 +275,8 @@
     <script src="~/assets/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="~/assets/js/adminlte.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -9,6 +9,7 @@ namespace ZergTracker.Models
     {
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }
+        public string ProfilePic { get; set; }
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
@@ -40,7 +41,7 @@ namespace ZergTracker.Models
     }
 
     public class ChangePasswordViewModel
-    {
+    {   
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Current password")]
@@ -56,6 +57,15 @@ namespace ZergTracker.Models
         [Display(Name = "Confirm new password")]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+    }
+
+    public class ChangeNameViewModel
+    {
+        [Display(Name = "New First Name")]
+        public string NewFirstName { get; set; }
+
+        [Display(Name = "New Last Name")]
+        public string NewLastName { get; set; }
     }
 
     public class AddPhoneNumberViewModel

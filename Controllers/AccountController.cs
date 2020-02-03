@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using jspBlog.Helpers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -17,6 +19,7 @@ namespace ZergTracker.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public AccountController()
         {
@@ -142,16 +145,49 @@ namespace ZergTracker.Controllers
             return View();
         }
 
+        // Get Profile info in sidebar
+        [AllowAnonymous]
+        public ActionResult UserProfileInfo()
+        {
+            ApplicationUser user = new ApplicationUser();
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = User.Identity.GetUserId();
+                user = db.Users.FirstOrDefault(u => u.Id == userId);
+            }
+            else
+            {
+                user.FirstName = "Anonymous";
+                user.LastName = "User";
+                user.ProfilePic = "/assets/img/defaults/default-profile-pic-1.png";
+            }
+            return View(user);
+        }
+
         //
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model, HttpPostedFileBase image)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                if (image == null)
+                {
+                    Random random = new Random();
+                    int num = random.Next(1, 4);
+
+                    model.ProfilePic = "/assets/img/default/defualt-profile-pic-" + num + ".png";
+                }
+                else if (ImageUploadValidator.IsWebFriendlyImage(image))
+                {
+                    var fileName = Path.GetFileName(image.FileName);
+                    image.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
+                    model.ProfilePic = "/Uploads/" + fileName;
+                }
+
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, ProfilePic = model.ProfilePic };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

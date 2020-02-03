@@ -42,11 +42,11 @@ namespace ZergTracker.Helper
         {
             if (IsUserOnProject(userId, projectId))
             {
-                Project proj = db.Projects.Find(projectId);
-                var delUser = db.Users.Find(userId);
-
-                proj.Users.Remove(delUser);
+                var proj = db.Projects.Find(projectId);
+                var userThing = db.Users.Find(userId);
+                proj.Users.Remove(userThing);
                 db.Entry(proj).State = EntityState.Modified;
+                db.SaveChanges();
             }
         }
 
@@ -55,9 +55,9 @@ namespace ZergTracker.Helper
             return db.Projects.Find(projectId).Users;
         }
 
-        public ICollection<ApplicationUser> UsersNotOnProject(int projectId)
+        public ICollection<ApplicationUser> UsersNotOnProject(string projectId)
         {
-            return db.Users.Where(u => u.Projects.All(p => p.Id != projectId)).ToList();
+            return db.Users.Where(u => u.Projects.All(p => p.Name != projectId)).ToList();
         }
     }
 }

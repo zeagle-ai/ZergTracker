@@ -180,16 +180,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\ImageUploadValidator.cs" />
     <Compile Include="Helper\UserProjectsHelper.cs" />
     <Compile Include="Helper\UserRolesHelper.cs" />
-    <Compile Include="Migrations\202001302104528_firsttime.cs" />
-    <Compile Include="Migrations\202001302104528_firsttime.Designer.cs">
-      <DependentUpon>202001302104528_firsttime.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202001302105442_secondtime.cs" />
-    <Compile Include="Migrations\202001302105442_secondtime.Designer.cs">
-      <DependentUpon>202001302105442_secondtime.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -211,10 +204,15 @@
     <Content Include="Assets\css\adminlte.min.css" />
     <Content Include="Assets\css\all.min.css" />
     <Content Include="Assets\css\custom.css" />
+    <Content Include="Assets\css\dataTables.bootstrap4.css" />
     <Content Include="Assets\css\daterangepicker.css" />
     <Content Include="Assets\css\icheck-bootstrap.min.css" />
     <Content Include="Assets\css\jqvmap.min.css" />
     <Content Include="Assets\css\OverlayScrollbars.min.css" />
+    <Content Include="Assets\css\select2-bootstrap4.css" />
+    <Content Include="Assets\css\select2-bootstrap4.min.css" />
+    <Content Include="Assets\css\select2.css" />
+    <Content Include="Assets\css\select2.min.css" />
     <Content Include="Assets\css\summernote-bs4.css" />
     <Content Include="Assets\css\tempusdominus-bootstrap-4.min.css" />
     <Content Include="Assets\img\AdminLTELogo.png" />
@@ -226,6 +224,10 @@
     <Content Include="Assets\img\boxed-bg.jpg" />
     <Content Include="Assets\img\boxed-bg.png" />
     <Content Include="Assets\img\default-150x150.png" />
+    <Content Include="Assets\img\defaults\default-profile-pic-1.png" />
+    <Content Include="Assets\img\defaults\default-profile-pic-2.png" />
+    <Content Include="Assets\img\defaults\default-profile-pic-3.png" />
+    <Content Include="Assets\img\defaults\default-profile-pic-4.png" />
     <Content Include="Assets\img\icons.png" />
     <Content Include="Assets\img\photo1.png" />
     <Content Include="Assets\img\photo2.png" />
@@ -247,14 +249,18 @@
     <Content Include="Assets\js\adminlte.js" />
     <Content Include="Assets\js\bootstrap.bundle.min.js" />
     <Content Include="Assets\js\Chart.min.js" />
+    <Content Include="Assets\js\dataTables.bootstrap4.js" />
     <Content Include="Assets\js\daterangepicker.js" />
     <Content Include="Assets\js\jquery-ui.min.js" />
+    <Content Include="Assets\js\jquery.bootstrap-duallistbox.js" />
+    <Content Include="Assets\js\jquery.dataTables.js" />
     <Content Include="Assets\js\jquery.knob.min.js" />
     <Content Include="Assets\js\jquery.min.js" />
     <Content Include="Assets\js\jquery.overlayScrollbars.min.js" />
     <Content Include="Assets\js\jquery.vmap.min.js" />
     <Content Include="Assets\js\jquery.vmap.usa.js" />
     <Content Include="Assets\js\moment.min.js" />
+    <Content Include="Assets\js\select2.full.min.js" />
     <Content Include="Assets\js\sparkline.js" />
     <Content Include="Assets\js\summernote-bs4.min.js" />
     <Content Include="Assets\js\tempusdominus-bootstrap-4.min.js" />
@@ -359,9 +365,12 @@
     <Content Include="Views\TicketNotifications\Edit.cshtml" />
     <Content Include="Views\TicketNotifications\Index.cshtml" />
     <Content Include="Views\Roles\Personnel.cshtml" />
+    <Content Include="Views\Manage\ChangeName.cshtml" />
+    <Content Include="Views\Account\UserProfileInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Uploads\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -375,14 +384,6 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202001302104528_firsttime.resx">
-      <DependentUpon>202001302104528_firsttime.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202001302105442_secondtime.resx">
-      <DependentUpon>202001302105442_secondtime.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

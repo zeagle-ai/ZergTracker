@@ -12,14 +12,10 @@ namespace ZergTracker.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        //public string DisplayName { get; set; }
-        //public string JobTitle { get; set; }
+        public string ProfilePic { get; set; }
 
         public ApplicationUser()
         {
-            //TicketAttachments = new HashSet<TicketAttachment>();
-            //TicketComments = new HashSet<TicketComment>();
-            //TicketHistories = new HashSet<TicketHistory>();
             TicketNotifications = new HashSet<TicketNotification>();
             Projects = new HashSet<Project>();
         }
@@ -51,14 +47,14 @@ namespace ZergTracker.Models
             return new ApplicationDbContext();
         }
 
-        public DbSet<Ticket> Tickets { get; set; }
-        public DbSet<Project> Projects { get; set; }
-        public DbSet<TicketAttachment> TicketAttachments { get; set; }
-        public DbSet<TicketComment> TicketComments { get; set; }
-        public DbSet<TicketHistory> TicketHistories { get; set; }
-        public DbSet<TicketNotification> TicketNotifications { get; set; }
-        public DbSet<TicketPriority> TicketPriorities { get; set; }
-        public DbSet<TicketStatus> TicketStatuses { get; set; }
-        public DbSet<TicketType> TicketTypes { get; set; }
+        public virtual DbSet<Ticket> Tickets { get; set; }
+        public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<TicketAttachment> TicketAttachments { get; set; }
+        public virtual DbSet<TicketComment> TicketComments { get; set; }
+        public virtual DbSet<TicketHistory> TicketHistories { get; set; }
+        public virtual DbSet<TicketNotification> TicketNotifications { get; set; }
+        public virtual DbSet<TicketPriority> TicketPriorities { get; set; }
+        public virtual DbSet<TicketStatus> TicketStatuses { get; set; }
+        public virtual DbSet<TicketType> TicketTypes { get; set; }
     }
 }
