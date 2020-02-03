@@ -21,9 +21,6 @@ namespace ZergTracker.Models
         }
 
         public virtual ICollection<Project> Projects { get; set; }
-        //public ICollection<TicketAttachment> TicketAttachments { get; set; }
-        //public ICollection<TicketComment> TicketComments { get; set; }
-        //public ICollection<TicketHistory> TicketHistories { get; set; }
         public virtual ICollection<TicketNotification> TicketNotifications { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
