@@ -1,0 +1,35 @@
+﻿@model IEnumerable<ZergTracker.Models.Project>
+
+
+<div class="card-body">
+    <table id="user-titles" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Project(s)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <p>
+                            @item.Name;
+                        </p>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+    @section scripts{
+        <!-- DataTables -->
+        <script src="~/assets/js/jquery.dataTables.js"></script>
+        <script src="~/assets/js/dataTables.bootstrap4.js"></script>
+        <script>
+            $(function () {
+                $("#user-titles").DataTable();
+            });
+        </script>
+    }

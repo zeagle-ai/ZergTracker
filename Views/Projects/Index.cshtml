@@ -17,6 +17,10 @@
     <p>
         @Html.ActionLink("Create New", "Create")
     </p>
+    @if(User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+    {
+        @Html.ActionLink("All Projects", "AllProjects", "Projects")
+    }
     <table class="table">
         <tr>
             <th>

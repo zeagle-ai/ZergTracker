@@ -47,6 +47,15 @@ namespace ZergTracker.Controllers
                 return View(db.Projects.ToList());
         }
 
+        // Get All Projects
+        [Authorize(Roles = "Admin, ProjectManager")]
+        public ActionResult AllProjects()
+        {
+
+            return View(db.Projects.ToList());
+            
+        }
+
         public ActionResult Personnel(PersonnelViewModel model)
         {
             model.UserId = new SelectList(db.Users, "Id", "FirstName");
