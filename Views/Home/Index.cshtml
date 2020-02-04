@@ -1,28 +1,35 @@
-﻿  <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-12">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Zerg Tracker</a></li>
-                        <li class="breadcrumb-item active">Dashboard</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
+﻿@model ZergTracker.Models.ViewModels.DashboardViewModel
 
+    <!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Zerg Tracker</a></li>
+                    <li class="breadcrumb-item active">Dashboard</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper padded-top">
     <!-- Main content -->
     <section class="content">
-        <div class="container-fluid">
+        <div class="custom-container">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-12">
+                    <h3>Totals</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
                     <!-- small box -->
                     <div class="small-box bg-primary">
                         <div class="inner">
-                            <h3>15</h3>
+                            <h3>@Model.ProjectCount</h3>
 
                             <p>Projects</p>
                         </div>
@@ -36,11 +43,11 @@
                     <!-- /box -->
                 </div>
                 <!-- /.col -->
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <!-- small box -->
-                    <div class="small-box bg-danger">
+                    <div class="small-box bg-warning">
                         <div class="inner">
-                            <h3>62</h3>
+                            <h3>@Model.TicketCount</h3>
 
                             <p>Issues</p>
                         </div>
@@ -54,11 +61,28 @@
                     <!-- /box -->
                 </div>
                 <!-- /.col -->
-                <div class="col-md-4">
+                <div class="col-md-3">
+                    <!-- small box -->
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3>@Model.UrgentTicketCount</h3>
+
+                            <p> URGENT Issues</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">
+                            Summary <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                    <!-- /box -->
+                </div>
+                <div class="col-md-3">
                     <!-- small box -->
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <h3>22</h3>
+                            <h3>@Model.UserCount</h3>
 
                             <p>Personnel</p>
                         </div>
@@ -75,12 +99,81 @@
 
             </div>
             <!-- /.row -->
+            <div class="row">
+                <div class="col-12">
+                    <h3>Key Indicators</h3>
+                </div>
+            </div>
+            <!-- Stats Section Start-->
+            <!-- Begin Row-->
+            <div class="row">
+                @if ((Model.TicketsPerDev <= 5))
+                {
+                    <div class="col-md-4">
+                        <div class="info-box bg-success">
+                            <span class="info-box-icon"><i class="far fa-thumbs-up"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Status: Green</span>
+                                <span class="info-box-number">@Model.TicketsPerDev</span>
 
-            <!-- Next row here-->
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: @Model.TicketsPerDevStatusBar"></div>
+                                </div>
+                                <span class="progress-description">
+                                    Active Issues per Developer
+                                </span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                }
+                else if (Model.TicketsPerDev > 5)
+                {
+                    <div class="col-md-4">
+                        <div class="info-box bg-warning">
+                            <span class="info-box-icon"><i class="far fa-thumbs-up"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Status: Green</span>
+                                <span class="info-box-number">@Model.TicketsPerDev</span>
 
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: @Model.TicketsPerDevStatusBar"></div>
+                                </div>
+                                <span class="progress-description">
+                                    Active Issues per Developer
+                                </span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                }
+                else if (Model.TicketsPerDev > 8)
+                {
+                    <div class="col-md-4">
+                        <div class="info-box bg-danger">
+                            <span class="info-box-icon"><i class="far fa-thumbs-down"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Status: Green</span>
+                                <span class="info-box-number">@Model.TicketsPerDev</span>
+
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: @Model.TicketsPerDevStatusBar"></div>
+                                </div>
+                                <span class="progress-description">
+                                    Active Issues per Developer
+                                </span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                }
+            </div>
+            <!-- Stats section End -->
         </div>
         <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
-
 </div><!-- End view wrapper / view -->

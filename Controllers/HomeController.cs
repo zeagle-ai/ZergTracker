@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using ZergTracker.Models;
+using ZergTracker.Models.ViewModels;
 
 namespace ZergTracker.Controllers
 {
@@ -13,7 +14,21 @@ namespace ZergTracker.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            DashboardViewModel model = new DashboardViewModel();
+            ApplicationDbContext db = new ApplicationDbContext();
+
+            model.ProjectCount = db.Projects.Count();
+            model.TicketCount = db.Tickets.Count();
+            model.UserCount = db.Users.Count();
+            int urg = db.Tickets.Where(p => p.TicketPriority.Name == "Urgent").Count();
+            model.UrgentTicketCount = urg;
+
+            int devUsers = db.Users.Where(u => u.Roles.All(r => r.RoleId == "b718888a-9360-46ca-8b48-3427fef97c82")).Count();
+            int tickPerDev = model.TicketCount / devUsers;
+            model.TicketsPerDev = tickPerDev;
+            model.TicketsPerDevStatusBar = (tickPerDev * 10) + "%";
+
+            return View(model);
         }
 
         public ActionResult About()

@@ -8,7 +8,7 @@
             <div class="col-sm-12">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Zerg Tracker</a></li>
-                    <li class="breadcrumb-item active">Login</li>
+                    <li class="breadcrumb-item active">Register</li>
                 </ol>
             </div>
         </div>
@@ -16,7 +16,7 @@
 </section>
 
 <div class="content-wrapper">
-    <div class="container">
+    <div class="custom-container">
         @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "Multipart/form-data" }))
         {
             @Html.AntiForgeryToken()

@@ -64,7 +64,7 @@ namespace ZergTracker.Controllers
             return View(model);
         }
 
-        // Change User Projects
+        // POST Change User Projects
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, ProjectManager")]

@@ -1,35 +1,53 @@
 ﻿@model IEnumerable<ZergTracker.Models.Project>
 
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Zerg Tracker</a></li>
+                    <li class="breadcrumb-item active">Projects</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
 
-<div class="card-body">
-    <table id="user-titles" class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Project(s)</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        <p>
-                            @item.Name;
-                        </p>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+<div class="content-wrapper">
+    <div class="custom-container">
+
+        <div class="card-body">
+            <table id="user-titles" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Project(s)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <p>
+                                    @item.Name;
+                                </p>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
 </div>
 
-    @section scripts{
-        <!-- DataTables -->
-        <script src="~/assets/js/jquery.dataTables.js"></script>
-        <script src="~/assets/js/dataTables.bootstrap4.js"></script>
-        <script>
-            $(function () {
-                $("#user-titles").DataTable();
-            });
-        </script>
-    }
+        @section scripts{
+            <!-- DataTables -->
+            <script src="~/assets/js/jquery.dataTables.js"></script>
+            <script src="~/assets/js/dataTables.bootstrap4.js"></script>
+            <script>
+                $(function () {
+                    $("#user-titles").DataTable();
+                });
+            </script>
+        }
