@@ -13,7 +13,6 @@ namespace ZergTracker.Models.ViewModels
         public MultiSelectList RoleName { get; set; }
         public SelectList ProjectId { get; set; }
         public ICollection<ApplicationUserTitles> UserTitles { get; set; }
-        //public ICollection<ApplicationUserTitles> UserProjects { get; set; }
     }
      public class ApplicationUserTitles : ApplicationUser
     {

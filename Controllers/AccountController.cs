@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -11,6 +12,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ZergTracker.Models;
+using static ZergTracker.Models.ViewModels.TicketViewModel;
 
 namespace ZergTracker.Controllers
 {
@@ -162,6 +164,14 @@ namespace ZergTracker.Controllers
                 user.ProfilePic = "/assets/img/defaults/default-profile-pic-1.png";
             }
             return View(user);
+        }
+
+        [AllowAnonymous] // Change this to only submitters
+        public ActionResult NavRoleItems()
+        {
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name");
+
+            return View();
         }
 
         //

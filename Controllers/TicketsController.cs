@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -7,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ZergTracker.Models;
+using static ZergTracker.Models.ViewModels.TicketViewModel;
 
 namespace ZergTracker.Controllers
 {
@@ -37,14 +39,20 @@ namespace ZergTracker.Controllers
         }
 
         // GET: Tickets/Create
-        public ActionResult Create()
+        public ActionResult Create(int ProjectId)
         {
+            Ticket model = new Ticket();
+
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+            model.OwnerUserId = userId;
+            model.OwnerUser = user;
+            model.ProjectId = ProjectId;
             ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName");
-            ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName");
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");
             ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name");
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
-            return View();
+            return View(model);
         }
 
         // POST: Tickets/Create
@@ -56,13 +64,21 @@ namespace ZergTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                Ticket model = new Ticket();
+                // project id has to be here
+                model.OwnerUserId = ticket.OwnerUserId;
+                model.OwnerUser = ticket.OwnerUser;
+                model.Created = DateTimeOffset.Now;
+                model.Title = ticket.Title;
+                model.Description = ticket.Description;
+                ApplicationUser dev = db.Users.Find(model.AssignedToUserId);
+                ticket.AssignedToUser = dev;
+
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
-            ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
             ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
