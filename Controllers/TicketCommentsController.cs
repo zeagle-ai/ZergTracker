@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -49,13 +50,19 @@ namespace ZergTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TicketId,UserId,Comment,Created")] TicketComment ticketComment)
+        public ActionResult Create([Bind(Include = "Id,TicketId,UserId,Comment,Created")] TicketComment ticketComment, int TicketId)
         {
             if (ModelState.IsValid)
             {
+                var userId = User.Identity.GetUserId();
+                ticketComment.UserId = userId;
+                ticketComment.TicketId = TicketId;
+                ticketComment.Created = DateTimeOffset.Now;
+
                 db.TicketComments.Add(ticketComment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                var tickId = db.Tickets.Find(TicketId).Id;
+                return RedirectToAction("Details", "Tickets", new { Id = tickId });
             }
 
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title", ticketComment.TicketId);
