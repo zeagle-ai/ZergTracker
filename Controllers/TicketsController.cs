@@ -8,7 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ZergTracker.Models;
-using static ZergTracker.Models.ViewModels.TicketViewModel;
+using ZergTracker.Models.ViewModels;
 
 namespace ZergTracker.Controllers
 {
@@ -20,6 +20,7 @@ namespace ZergTracker.Controllers
         public ActionResult Index()
         {
             var tickets = db.Tickets.Include(t => t.AssignedToUser).Include(t => t.OwnerUser).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
+            
             return View(tickets.ToList());
         }
 
@@ -41,13 +42,14 @@ namespace ZergTracker.Controllers
         // GET: Tickets/Create
         public ActionResult Create(int ProjectId)
         {
-            Ticket model = new Ticket();
+            TicketViewModel model = new TicketViewModel();
 
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
             model.OwnerUserId = userId;
             model.OwnerUser = user;
             model.ProjectId = ProjectId;
+            model.ProjectName = db.Projects.SingleOrDefault(n => n.Id == ProjectId)?.Name;
             ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName");
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");
             ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name");
@@ -65,7 +67,7 @@ namespace ZergTracker.Controllers
             if (ModelState.IsValid)
             {
                 Ticket model = new Ticket();
-                // project id has to be here
+                
                 model.OwnerUserId = ticket.OwnerUserId;
                 model.OwnerUser = ticket.OwnerUser;
                 model.Created = DateTimeOffset.Now;

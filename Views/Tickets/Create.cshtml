@@ -1,4 +1,4 @@
-﻿@model ZergTracker.Models.Ticket
+﻿@model ZergTracker.Models.ViewModels.TicketViewModel
 
 @{
     ViewBag.Title = "Create";
@@ -23,14 +23,11 @@
 <div class="content-wrapper padded-top">
     <div class="custom-container">
 
-        <h2>Create Ticket</h2>
-
-
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
             <div class="form-horizontal">
-                <h5>Ticket</h5> @Model.ProjectId
+                <h5>Add Issue for @Model.ProjectName</h5>
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
