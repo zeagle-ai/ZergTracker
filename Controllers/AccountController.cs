@@ -166,6 +166,16 @@ namespace ZergTracker.Controllers
             return View(user);
         }
 
+        //Get Comment Profile Pic
+        public ActionResult CommentProfilePic()
+        {
+            ApplicationUser user = new ApplicationUser();
+            var userId = User.Identity.GetUserId();
+            user = db.Users.FirstOrDefault(u => u.Id == userId);
+
+            return View(user);
+        }
+
         [AllowAnonymous] // Change this to only submitters
         public ActionResult NavRoleItems()
         {

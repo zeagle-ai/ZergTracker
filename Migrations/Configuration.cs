@@ -56,6 +56,7 @@ namespace ZergTracker.Migrations
                     Email = "mainadmin@demo.com",
                     FirstName = "Admin",
                     LastName = "Main",
+                    ProfilePic = "/assets/img/defaults/default-profile-pic-1.png",
                 };
 
                 userManager.Create(user, "Abc&123!");
@@ -81,6 +82,9 @@ namespace ZergTracker.Migrations
 
             if (!context.TicketPriorities.Any(u => u.Name == "Urgent"))
             { context.TicketPriorities.Add(new TicketPriority { Name = "Urgent" }); }
+
+            if (!context.TicketTypes.Any(u => u.Name == "Bug"))
+            { context.TicketTypes.Add(new TicketType { Name = "Bug" }); }
 
             if (!context.TicketTypes.Any(u => u.Name == "Production Fix"))
             { context.TicketTypes.Add(new TicketType { Name = "Production Fix" }); }

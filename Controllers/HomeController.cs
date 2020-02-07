@@ -24,9 +24,17 @@ namespace ZergTracker.Controllers
             model.UrgentTicketCount = urg;
 
             int devUsers = db.Users.Where(u => u.Roles.All(r => r.RoleId == "b718888a-9360-46ca-8b48-3427fef97c82")).Count();
-            int tickPerDev = model.TicketCount / devUsers;
-            model.TicketsPerDev = tickPerDev;
-            model.TicketsPerDevStatusBar = (tickPerDev * 10) + "%";
+            if (model.TicketCount != 0 && devUsers != 0)
+            {
+                int tickPerDev = model.TicketCount / devUsers;
+                model.TicketsPerDev = tickPerDev;
+                model.TicketsPerDevStatusBar = (tickPerDev * 10) + "%";
+            }
+            else
+            {
+                model.TicketsPerDev = 0;
+                model.TicketsPerDevStatusBar = "0%";
+            }
 
             return View(model);
         }

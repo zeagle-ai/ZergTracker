@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using jspBlog.Helpers;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -69,6 +71,47 @@ namespace ZergTracker.Controllers
             ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketComment.UserId);
             return View(ticketComment);
         }
+
+        //Post: Ticket Comment and Attachment
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddCommentAttachment([Bind(Include = "Id,TicketId,UserId,Comment")] TicketComment ticketComment, int TicketId, HttpPostedFileBase image)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = User.Identity.GetUserId();
+                ticketComment.UserId = userId;
+                ticketComment.TicketId = TicketId;
+                ticketComment.Created = DateTimeOffset.Now;
+                db.TicketComments.Add(ticketComment);
+                db.SaveChanges();
+
+                if (ImageUploadValidator.IsWebFriendlyImage(image))
+                {
+                    TicketAttachment attachments = new TicketAttachment();
+                    ticketComment.HasPic = true;
+                    attachments.UserId = userId;
+                    attachments.TicketId = TicketId;
+                    attachments.CommentId = ticketComment.Id;
+                    attachments.Created = DateTimeOffset.Now;
+                    var fileName = Path.GetFileName(image.FileName);
+                    image.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
+                    attachments.FilePath = "/Uploads/" + fileName;
+                    db.TicketAttachments.Add(attachments);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    ticketComment.HasPic = false;
+                }
+
+                var tickId = db.Tickets.Find(TicketId).Id;
+                return RedirectToAction("Details", "Tickets", new { Id = tickId });
+            }
+
+            return View();
+        }
+
 
         // GET: TicketComments/Edit/5
         public ActionResult Edit(int? id)

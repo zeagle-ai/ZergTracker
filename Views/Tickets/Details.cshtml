@@ -115,32 +115,101 @@
 
         @if (User.Identity.IsAuthenticated)
         {
-
-            using (Html.BeginForm("Create", "TicketComments", new { TicketId = Model.Id }, FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
-                @Html.Hidden("TicketId", Model.Id)
-                <div class="form-group rounded">
-                    <div class="row">
-                        <div class="col-md-10 mx-auto">
-                            @Html.TextArea("Comment", new { @class = "form-control", placeholder = "Leave comment here...", rows = "2" })
-                        </div>
-                        <div class="col-md-2 mx-auto">
-                            <input type="submit" value="Comment" class="btn btn-primary" />
-                        </div>
+            <div class="card card-widget" id="comments">
+                <div class="card-header">
+                    <div class="user-block">
+                        <img class="img-circle" src="~/favicon-32x32.png" alt="Zerg Logo">
+                        <span class="username">@Model.Title</span>
+                        <span class="description">Issue Creation: @Model.Created.ToString("MMM dd yyyy")</span>
                     </div>
+                    <!-- /.user-block -->
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <!-- /.card-tools -->
                 </div>
-            }
+                <!-- /.card-header -->
+                
+                        @foreach (var comment in Model.TicketComments)
+                        {
+                    <div class="card-body">
 
-            foreach (var comment in Model.TicketComments)
-            {
+                        @if (comment.HasPic)
+                        {
+                            foreach (var pic in Model.TicketAttachments)
+                            {
+                                if (comment.Id == pic.CommentId)
+                                {
+                                    <img class="img-fluid pad" src="@pic.FilePath" alt="Comment Attachment">
 
-            }
-        }
-        else
-        {
-            <h3 class="text-center">Please Login or Register to View or Leave Comments!</h3>
-        }
+                                }
+                            }
+                        }
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer card-comments">
+                        <div class="card-comment">
+                            <!-- User image -->
+                            <img class="img-circle img-sm" src="@comment.User.ProfilePic" alt="User Image">
+
+                            <div class="comment-text">
+                                <span class="username">
+                                    @comment.User.FirstName @comment.User.LastName
+                                    <span class="text-muted float-right">@comment.Created.ToString("MM/dd/yyyy h:mm tt")</span>
+                                </span><!-- /.username -->
+                                @comment.Comment
+                            </div>
+                            <!-- /.comment-text -->
+                        </div>
+                        <!-- /.card-comment -->
+                    </div>
+                    <!-- /.card-footer/comments -->
+                    }
+                    <div class="card-footer">
+                        @using (Html.BeginForm("AddCommentAttachment", "TicketComments", new { TicketId = Model.Id }, FormMethod.Post, new { role = "form", enctype = "Multipart/form-data" }))
+                        {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("TicketId", Model.Id)
+
+                            <div class="row">
+                                <div class="col-12">
+                                    @Html.Action("CommentProfilePic", "Account")
+                                    <div class="img-push">                               
+                                        @Html.TextArea("Comment", new { @class = "form-control", placeholder = "Leave comment here...", rows = "2" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-9"></div>
+                                <div class="col-3">
+                                    <input name="image" type="file" class="form-control" id="fileUpload" style="display: none;" />
+                                    <div class="btn-group padded-top">
+                                        <a class="btn btn-primary" onclick="clicker()"><i class="fas fa-image fa-2x" style="color: white; cursor: pointer;"></i></a>
+                                        <input type="submit" value="Comment" class="btn btn-primary" /> 
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <!-- /.card-footer -->
+                </div>
+                <!-- /.card -->
+    }
+    else
+    {
+        <h3 class="text-center">Please Login or Register to View or Leave Comments!</h3>
+    }
 
     </div>
 </div>
+
+<script>
+    function clicker() {
+        fileUpload.click();
+    }
+</script>

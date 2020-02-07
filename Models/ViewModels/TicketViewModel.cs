@@ -28,14 +28,14 @@ namespace ZergTracker.Models.ViewModels
         public string OwnerUserId { get; set; }
         public string AssignedToUserId { get; set; }
 
-        public virtual ICollection<TicketAttachment> TicketAttachments { get; set; }
-        public virtual ICollection<TicketComment> TicketComments { get; set; }
-        public virtual ICollection<TicketHistory> TicketHistories { get; set; }
-        public virtual ICollection<TicketNotification> TicketNotifications { get; set; }
-        public virtual TicketStatus TicketStatus { get; set; }
-        public virtual TicketPriority TicketPriority { get; set; }
-        public virtual TicketType TicketType { get; set; }
-        public virtual ApplicationUser OwnerUser { get; set; }
-        public virtual ApplicationUser AssignedToUser { get; set; }
+        public ICollection<TicketAttachment> TicketAttachments { get; set; }
+        public ICollection<TicketComment> TicketComments { get; set; }
+        public ICollection<TicketHistory> TicketHistories { get; set; }
+        public ICollection<TicketNotification> TicketNotifications { get; set; }
+        public TicketStatus TicketStatus { get; set; }
+        public TicketPriority TicketPriority { get; set; }
+        public TicketType TicketType { get; set; }
+        public ApplicationUser OwnerUser { get; set; }
+        public ApplicationUser AssignedToUser { get; set; }
     }
 }

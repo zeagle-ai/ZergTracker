@@ -62,19 +62,12 @@ namespace ZergTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,Created,Updated,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,AssignedToUserId")] Ticket ticket)
+        public ActionResult Create([Bind(Include = "Id,Title,Description,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,AssignedToUserId")] Ticket ticket)
         {
             if (ModelState.IsValid)
-            {
-                Ticket model = new Ticket();
-                
-                model.OwnerUserId = ticket.OwnerUserId;
-                model.OwnerUser = ticket.OwnerUser;
-                model.Created = DateTimeOffset.Now;
-                model.Title = ticket.Title;
-                model.Description = ticket.Description;
-                ApplicationUser dev = db.Users.Find(model.AssignedToUserId);
-                ticket.AssignedToUser = dev;
+            {   
+                var timeIs = DateTimeOffset.Now;
+                ticket.Created = timeIs;
 
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
