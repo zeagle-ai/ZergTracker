@@ -36,7 +36,24 @@ namespace ZergTracker.Controllers
             {
                 return HttpNotFound();
             }
-            return View(ticket);
+
+            TicketViewModel model = new TicketViewModel();
+
+            model.Id = ticket.Id;
+            model.OwnerUser = ticket.OwnerUser;
+            model.ProjectName = db.Projects.FirstOrDefault(p => p.Id == ticket.ProjectId).Name;
+            model.TicketType = ticket.TicketType;
+            model.TicketStatus = ticket.TicketStatus;
+            model.TicketPriority = ticket.TicketPriority;
+            model.Title = ticket.Title;
+            model.Description = ticket.Description;
+            model.AssignedToUser = ticket.AssignedToUser;
+            model.Created = ticket.Created;
+            model.Updated = ticket.Updated;
+            model.TicketComments = ticket.TicketComments;
+            model.TicketAttachments = ticket.TicketAttachments;
+
+            return View(model);
         }
 
         // GET: Tickets/Create
@@ -44,10 +61,6 @@ namespace ZergTracker.Controllers
         {
             TicketViewModel model = new TicketViewModel();
 
-            var userId = User.Identity.GetUserId();
-            var user = db.Users.Find(userId);
-            model.OwnerUserId = userId;
-            model.OwnerUser = user;
             model.ProjectId = ProjectId;
             model.ProjectName = db.Projects.SingleOrDefault(n => n.Id == ProjectId)?.Name;
             ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName");
@@ -68,7 +81,10 @@ namespace ZergTracker.Controllers
             {   
                 var timeIs = DateTimeOffset.Now;
                 ticket.Created = timeIs;
-
+                var userId = User.Identity.GetUserId();
+                var user = db.Users.Find(userId);
+                ticket.OwnerUserId = userId;
+                ticket.OwnerUser = user;
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return RedirectToAction("Index");

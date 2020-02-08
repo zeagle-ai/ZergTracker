@@ -252,6 +252,7 @@
     <Content Include="Assets\js\adminlte.js" />
     <Content Include="Assets\js\bootstrap.bundle.min.js" />
     <Content Include="Assets\js\Chart.min.js" />
+    <Content Include="Assets\js\custom.js" />
     <Content Include="Assets\js\dataTables.bootstrap4.js" />
     <Content Include="Assets\js\daterangepicker.js" />
     <Content Include="Assets\js\jquery-ui.min.js" />

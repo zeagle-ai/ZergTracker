@@ -1,4 +1,4 @@
-﻿@model ZergTracker.Models.Ticket
+﻿@model ZergTracker.Models.ViewModels.TicketViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -21,114 +21,81 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper padded-top">
     <div class="custom-container">
+        <div class="card">
+            <!-- Main Ticket Area -->
+            <div class="card-header">
+                <div class="user-block">
+                    <img class="img-circle" src="~/favicon-32x32.png" alt="Zerg Logo">
+                    <span class="username">Project: @Model.ProjectName</span>
+                    <span class="description">Issue Creation: @Model.Created.ToString("MMM dd yyyy")</span>
+                </div>
+                <div class="card-tools">
+                    
+                    @if (Model.TicketStatus.Name == "New")
+                    {
+                        <span style="margin-right: 15px; font-size: 24px;" class="badge badge-pill badge-primary">@Model.TicketStatus.Name</span>
+                    }
+                    else if (Model.TicketStatus.Name == "In Development")
+                    {
+                        <span style="margin-right: 15px; font-size: 24px;" class="badge badge-pill badge-warning">@Model.TicketStatus.Name</span>
+                    }
+                    else if (Model.TicketStatus.Name == "Resolved")
+                    {
+                        <span style="margin-right: 15px; font-size: 24px;" class="badge badge-pill badge-secondary">@Model.TicketStatus.Name</span>
+                    }
 
-        <div>
-            <h4>Ticket</h4>
-            <hr />
-            <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayNameFor(model => model.AssignedToUser.FirstName)
-                </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.AssignedToUser.FirstName)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.OwnerUser.FirstName)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.OwnerUser.FirstName)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.TicketPriority.Name)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.TicketPriority.Name)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.TicketStatus.Name)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.TicketStatus.Name)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.TicketType.Name)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.TicketType.Name)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.Title)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.Title)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.Description)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.Description)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.Created)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.Created)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.Updated)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.Updated)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.ProjectId)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.ProjectId)
-                </dd>
-
-            </dl>
+                    @if (Model.TicketPriority.Name == "Urgent")
+                    {
+                        <span style="margin-right: 15px; font-size: 24px;" class="badge badge-pill badge-danger">@Model.TicketPriority.Name</span>
+                    }
+                    else if (Model.TicketPriority.Name == "High")
+                    {
+                        <span style="margin-right: 15px; font-size: 24px;" class="badge badge-pill badge-warning">@Model.TicketPriority.Name</span>
+                    }
+                    else if (Model.TicketPriority.Name == "Medium")
+                    {
+                        <span style="margin-right: 15px; font-size: 24px;" class="badge badge-pill badge-warning">@Model.TicketPriority.Name</span>
+                    }
+                    else if (Model.TicketPriority.Name == "Low")
+                    {
+                        <span style="margin-right: 15px; font-size: 24px;" class="badge badge-pill badge-success">@Model.TicketPriority.Name</span>
+                    }
+                    
+                </div>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Issue Title</dt>
+                    <dd class="col-sm-8">@Model.Title</dd>
+                    <dt class="col-sm-4">Issue Description</dt>
+                    <dd class="col-sm-8">@Model.Description</dd>
+                    <dt class="col-sm-4">Owner</dt>
+                    <dd class="col-sm-8">@Model.OwnerUser.FirstName @Model.OwnerUser.LastName</dd>
+                    <dt class="col-sm-4">Assigned Dev:</dt>
+                    <dd class="col-sm-8">@Model.AssignedToUser.FirstName @Model.AssignedToUser.LastName</dd>
+                </dl>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                <span class="text-muted float-right">Last Updated: @Model.Updated.ToString("MM/dd/yyyy h:mm tt")</span>
+            </div>
         </div>
-        <p>
-            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-            @Html.ActionLink("Back to List", "Index")
-        </p>
-
+        
+        <!-- Comments and Attachments -->
         @if (User.Identity.IsAuthenticated)
         {
             <div class="card card-widget" id="comments">
                 <div class="card-header">
                     <div class="user-block">
                         <img class="img-circle" src="~/favicon-32x32.png" alt="Zerg Logo">
-                        <span class="username">@Model.Title</span>
+                        <span class="username">Comments For: @Model.Title</span>
                         <span class="description">Issue Creation: @Model.Created.ToString("MMM dd yyyy")</span>
                     </div>
                     <!-- /.user-block -->
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                            <i class="fas fa-times"></i>
                         </button>
                     </div>
                     <!-- /.card-tools -->
@@ -185,9 +152,11 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-9"></div>
+                                <div class="col-9">
+                                    <img class="img-fluid pad padded-top align-content-center" id="preview" style="max-height: 150px;" />
+                                </div>
                                 <div class="col-3">
-                                    <input name="image" type="file" class="form-control" id="fileUpload" style="display: none;" />
+                                    <input name="image" type="file" class="form-control" id="fileUpload" style="display: none;" onchange="loadFile(event)" />
                                     <div class="btn-group padded-top">
                                         <a class="btn btn-primary" onclick="clicker()"><i class="fas fa-image fa-2x" style="color: white; cursor: pointer;"></i></a>
                                         <input type="submit" value="Comment" class="btn btn-primary" /> 
@@ -207,9 +176,3 @@
 
     </div>
 </div>
-
-<script>
-    function clicker() {
-        fileUpload.click();
-    }
-</script>
