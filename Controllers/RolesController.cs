@@ -23,6 +23,7 @@ namespace ZergTracker.Controllers
             model.UserId = new SelectList(db.Users, "Id", "FirstName");
             model.RoleName = new MultiSelectList(db.Roles, "Name", "Name");
             model.ProjectId = new SelectList(db.Projects, "Id", "Name");
+            model.PMers = new SelectList(db.Users.Where(u => u.Roles.Any(r => r.RoleId == "f462585d-af2b-4bfb-bed8-7aa5789956e4")), "Id", "FirstName");
             var userTitles = new List<ApplicationUserTitles>();
             model.UserTitles = userTitles;
 

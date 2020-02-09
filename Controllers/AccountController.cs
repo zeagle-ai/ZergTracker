@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ZergTracker.Models;
+using ZergTracker.Models.ViewModels;
 using static ZergTracker.Models.ViewModels.TicketViewModel;
 
 namespace ZergTracker.Controllers
@@ -180,6 +181,19 @@ namespace ZergTracker.Controllers
         public ActionResult NavRoleItems()
         {
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name");
+
+            return View();
+        }
+
+        //GET Notifications
+        //
+        public ActionResult Notifications()
+        {
+            NotificationsViewModel model = new NotificationsViewModel();
+
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+            
 
             return View();
         }

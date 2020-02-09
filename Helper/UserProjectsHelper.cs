@@ -38,6 +38,22 @@ namespace ZergTracker.Helper
             }
         }
 
+        public void AddPM(string userId, int projectId)
+        {
+            Project proj = db.Projects.Find(projectId);
+            proj.ProjectManagerId = userId;
+            
+            db.SaveChanges();
+        }
+
+        public void RemovePM(string userId, int projectId)
+        {
+            Project proj = db.Projects.Find(projectId);
+            proj.ProjectManagerId = null;
+
+            db.SaveChanges();
+        }
+
         public void RemoveUserFromProject(string userId, int projectId)
         {
             if (IsUserOnProject(userId, projectId))

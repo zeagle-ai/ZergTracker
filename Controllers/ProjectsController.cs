@@ -82,6 +82,23 @@ namespace ZergTracker.Controllers
             return RedirectToAction("Personnel", "Roles");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, ProjectManager")]
+        public ActionResult ChangeProjectPM(string pmers, int projectId, bool add)
+        {
+            //do i need another check to go to badrequest
+            if (add)
+            {
+                helper.AddPM(pmers, projectId);
+            }
+            else
+            {
+                helper.RemovePM(pmers, projectId);
+            }
+            return RedirectToAction("Personnel", "Roles");
+        }
+
         // GET: Projects/Details/5
         public ActionResult Details(int? id)
         {

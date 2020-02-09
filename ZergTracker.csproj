@@ -197,6 +197,7 @@
     <Compile Include="Models\TicketPriority.cs" />
     <Compile Include="Models\TicketStatus.cs" />
     <Compile Include="Models\TicketType.cs" />
+    <Compile Include="Models\ViewModels\NotificationsViewModel.cs" />
     <Compile Include="Models\ViewModels\PersonnelViewModel.cs" />
     <Compile Include="Models\ViewModels\DashboardViewModel.cs" />
     <Compile Include="Models\ViewModels\TicketViewModel.cs" />
@@ -377,6 +378,7 @@
     <Content Include="Views\Projects\AllProjects.cshtml" />
     <Content Include="Views\Account\NavRoleItems.cshtml" />
     <Content Include="Views\Account\CommentProfilePic.cshtml" />
+    <Content Include="Views\Account\Notifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
