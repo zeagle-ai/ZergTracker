@@ -67,9 +67,26 @@ namespace ZergTracker.Controllers
                 }
                 return View(model);
             }
-            var tickets = db.Tickets.Include(t => t.AssignedToUser).Include(t => t.OwnerUser).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
-            
-            return View(tickets.ToList());
+
+            TicketViewModel model = new TicketViewModel();
+
+            foreach (var ticket in db.Tickets.ToList())
+            {
+                model.Id = ticket.Id;
+                model.OwnerUser = ticket.OwnerUser;
+                model.ProjectName = db.Projects.FirstOrDefault(p => p.Id == ticket.ProjectId).Name;
+                model.TicketType = ticket.TicketType;
+                model.TicketStatus = ticket.TicketStatus;
+                model.TicketPriority = ticket.TicketPriority;
+                model.Title = ticket.Title;
+                model.Description = ticket.Description;
+                model.AssignedToUser = ticket.AssignedToUser;
+                model.Created = ticket.Created;
+                model.Updated = ticket.Updated;
+                model.TicketComments = ticket.TicketComments;
+                model.TicketAttachments = ticket.TicketAttachments;
+            }
+            return View(model);
         }
 
         // GET: Tickets/Details/5
