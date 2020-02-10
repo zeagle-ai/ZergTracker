@@ -180,20 +180,8 @@ namespace ZergTracker.Controllers
         [AllowAnonymous] // Change this to only submitters
         public ActionResult NavRoleItems()
         {
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name");
-
-            return View();
-        }
-
-        //GET Notifications
-        //
-        public ActionResult Notifications()
-        {
-            NotificationsViewModel model = new NotificationsViewModel();
-
             var userId = User.Identity.GetUserId();
-            var user = db.Users.Find(userId);
-            
+            ViewBag.ProjectId = new SelectList(db.Projects.Where(u => u.Users.Any(i => i.Id == userId)), "Id", "Name");
 
             return View();
         }

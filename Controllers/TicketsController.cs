@@ -19,6 +19,54 @@ namespace ZergTracker.Controllers
         // GET: Tickets
         public ActionResult Index()
         {
+            if (User.IsInRole("Developer"))
+            {
+                TicketViewModel model = new TicketViewModel();
+
+                var userId = User.Identity.GetUserId();
+
+                foreach (var ticket in db.Tickets.Where(u => u.AssignedToUserId == userId))
+                {
+                    model.Id = ticket.Id;
+                    model.OwnerUser = ticket.OwnerUser;
+                    model.ProjectName = db.Projects.FirstOrDefault(p => p.Id == ticket.ProjectId).Name;
+                    model.TicketType = ticket.TicketType;
+                    model.TicketStatus = ticket.TicketStatus;
+                    model.TicketPriority = ticket.TicketPriority;
+                    model.Title = ticket.Title;
+                    model.Description = ticket.Description;
+                    model.AssignedToUser = ticket.AssignedToUser;
+                    model.Created = ticket.Created;
+                    model.Updated = ticket.Updated;
+                    model.TicketComments = ticket.TicketComments;
+                    model.TicketAttachments = ticket.TicketAttachments;
+                }
+                return View(model);
+            }
+            else if (User.IsInRole("Submitter"))
+            {
+                TicketViewModel model = new TicketViewModel();
+
+                var userId = User.Identity.GetUserId();
+
+                foreach (var ticket in db.Tickets.Where(u => u.OwnerUserId == userId))
+                {
+                    model.Id = ticket.Id;
+                    model.OwnerUser = ticket.OwnerUser;
+                    model.ProjectName = db.Projects.FirstOrDefault(p => p.Id == ticket.ProjectId).Name;
+                    model.TicketType = ticket.TicketType;
+                    model.TicketStatus = ticket.TicketStatus;
+                    model.TicketPriority = ticket.TicketPriority;
+                    model.Title = ticket.Title;
+                    model.Description = ticket.Description;
+                    model.AssignedToUser = ticket.AssignedToUser;
+                    model.Created = ticket.Created;
+                    model.Updated = ticket.Updated;
+                    model.TicketComments = ticket.TicketComments;
+                    model.TicketAttachments = ticket.TicketAttachments;
+                }
+                return View(model);
+            }
             var tickets = db.Tickets.Include(t => t.AssignedToUser).Include(t => t.OwnerUser).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
             
             return View(tickets.ToList());
@@ -87,6 +135,7 @@ namespace ZergTracker.Controllers
                 ticket.OwnerUser = user;
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 

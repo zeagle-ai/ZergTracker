@@ -23,7 +23,7 @@ namespace ZergTracker.Controllers
             int urg = db.Tickets.Where(p => p.TicketPriority.Name == "Urgent").Count();
             model.UrgentTicketCount = urg;
 
-            int devUsers = db.Users.Where(u => u.Roles.All(r => r.RoleId == "b718888a-9360-46ca-8b48-3427fef97c82")).Count();
+            int devUsers = db.Users.Where(u => u.Roles.Any(r => r.RoleId == "c4e1a39e-19a2-45b3-80be-46f9c2fa45ca")).Count();
             if (model.TicketCount != 0 && devUsers != 0)
             {
                 int tickPerDev = model.TicketCount / devUsers;

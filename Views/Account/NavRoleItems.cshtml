@@ -3,8 +3,8 @@
     Layout = null;
 }
 
-
-
+@if (User.IsInRole("Submitter"))
+{
     <li class="nav-item">
         <a data-toggle="modal" data-target="#addTicket" class="nav-link" style="cursor: pointer">
             <i class="nav-icon fas fa-plus"></i>
@@ -28,7 +28,7 @@
             {
                 @Html.AntiForgeryToken()
                 <div class="modal-body">
-                    @Html.DropDownListFor(p => p.ProjectId, null, new { @class = "form-control"})
+                    @Html.DropDownListFor(p => p.ProjectId, null, new { @class = "form-control" })
                 </div>
                 <div class="modal-footer">
                     <input type="submit" value="Add Issue" class="btn btn-primary" style="color: white;" />
@@ -37,3 +37,4 @@
             </div>
     </div>
 </div>
+}

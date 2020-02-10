@@ -33,31 +33,25 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.AssignedToUser.FirstName)
+                                        Dev Assigned
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.OwnerUser.FirstName)
+                                        Submitter
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.TicketPriority.Name)
+                                        Priority
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.TicketStatus.Name)
+                                        Status
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.TicketType.Name)
+                                        Type
                                     </th>
                                     <th>
                                         @Html.DisplayNameFor(model => model.Title)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.Description)
-                                    </th>
-                                    <th>
                                         @Html.DisplayNameFor(model => model.Created)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Updated)
                                     </th>
                                     <th>
                                         Project Name
@@ -88,21 +82,27 @@
                                         @Html.DisplayFor(modelItem => item.Title)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Description)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Created)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Updated)
+                                        @item.Created.ToString("MMM dd, yyyy")
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.ProjectId)
                                     </td>
                                     <td>
-                                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                        <a class="btn btn-primary btn-sm" href="@Url.Action("Details", new { id = item.Id })">
+                                            <i class="fas fa-folder">
+                                            </i>
+                                            View
+                                        </a>
+                                        <a class="btn btn-info btn-sm" href="@Url.Action("Edit", new { id = item.Id })">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                            Edit
+                                        </a>
+                                        <a class="btn btn-danger btn-sm" href="@Url.Action("Delete", new { id = item.Id })">
+                                            <i class="fas fa-trash">
+                                            </i>
+                                            Delete
+                                        </a>
                                     </td>
                                 </tr>
                             }

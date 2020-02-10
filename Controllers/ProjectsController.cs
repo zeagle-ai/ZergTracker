@@ -70,7 +70,7 @@ namespace ZergTracker.Controllers
         [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult ChangeUserProjects(string userId, int projectId, bool add)
         {
-            //do i need another check to go to badrequest
+            //i need another check to go to badrequest
             if (add)
             {
                 helper.AddUserToProject(userId, projectId);
@@ -87,7 +87,7 @@ namespace ZergTracker.Controllers
         [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult ChangeProjectPM(string pmers, int projectId, bool add)
         {
-            //do i need another check to go to badrequest
+            //i need another check to go to badrequest
             if (add)
             {
                 helper.AddPM(pmers, projectId);

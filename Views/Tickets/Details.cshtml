@@ -21,67 +21,191 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper padded-top">
     <div class="custom-container">
+
         <div class="card">
-            <!-- Main Ticket Area -->
             <div class="card-header">
-                <div class="user-block">
-                    <img class="img-circle" src="~/favicon-32x32.png" alt="Zerg Logo">
-                    <span class="username">Project: @Model.ProjectName</span>
-                    <span class="description">Issue Creation: @Model.Created.ToString("MMM dd yyyy")</span>
-                </div>
+                <h3 class="card-title">Projects Detail</h3>
+
                 <div class="card-tools">
-                    
-                    @if (Model.TicketStatus.Name == "New")
-                    {
-                        <span style="margin-right: 15px; font-size: 24px;" class="badge badge-pill badge-primary">@Model.TicketStatus.Name</span>
-                    }
-                    else if (Model.TicketStatus.Name == "In Development")
-                    {
-                        <span style="margin-right: 15px; font-size: 24px;" class="badge badge-pill badge-warning">@Model.TicketStatus.Name</span>
-                    }
-                    else if (Model.TicketStatus.Name == "Resolved")
-                    {
-                        <span style="margin-right: 15px; font-size: 24px;" class="badge badge-pill badge-secondary">@Model.TicketStatus.Name</span>
-                    }
-
-
-                    @if (Model.TicketPriority.Name == "Urgent")
-                    {
-                        <span style="margin-right: 15px; font-size: 24px;" class="badge badge-pill badge-danger">@Model.TicketPriority.Name</span>
-                    }
-                    else if (Model.TicketPriority.Name == "High")
-                    {
-                        <span style="margin-right: 15px; font-size: 24px;" class="badge badge-pill badge-warning">@Model.TicketPriority.Name</span>
-                    }
-                    else if (Model.TicketPriority.Name == "Medium")
-                    {
-                        <span style="margin-right: 15px; font-size: 24px;" class="badge badge-pill badge-warning">@Model.TicketPriority.Name</span>
-                    }
-                    else if (Model.TicketPriority.Name == "Low")
-                    {
-                        <span style="margin-right: 15px; font-size: 24px;" class="badge badge-pill badge-success">@Model.TicketPriority.Name</span>
-                    }
-                    
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
                 </div>
             </div>
             <div class="card-body">
-                <dl class="row">
-                    <dt class="col-sm-4">Issue Title</dt>
-                    <dd class="col-sm-8">@Model.Title</dd>
-                    <dt class="col-sm-4">Issue Description</dt>
-                    <dd class="col-sm-8">@Model.Description</dd>
-                    <dt class="col-sm-4">Owner</dt>
-                    <dd class="col-sm-8">@Model.OwnerUser.FirstName @Model.OwnerUser.LastName</dd>
-                    <dt class="col-sm-4">Assigned Dev:</dt>
-                    <dd class="col-sm-8">@Model.AssignedToUser.FirstName @Model.AssignedToUser.LastName</dd>
-                </dl>
+                <div class="row">
+                    <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+                        <div class="row">
+                            <div class="col-12 col-sm-4">
+                                @if (Model.TicketType.Name == "User Interface Issue")
+                                {
+                                    <div class="info-box bg-gradient-blue">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center">@Model.TicketType.Name</span>
+                                        </div>
+                                    </div>
+                                }
+                                else if (Model.TicketType.Name == "Bug")
+                                {
+                                    <div class="info-box bg-gradient-danger">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center">@Model.TicketType.Name</span>
+                                        </div>
+                                    </div>
+                                }
+                                else if (Model.TicketType.Name == "Software Update")
+                                {
+                                    <div class="info-box bg-gradient-green">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center">@Model.TicketType.Name</span>
+                                        </div>
+                                    </div>
+                                }
+                                else if (Model.TicketType.Name == "Project Task")
+                                {
+                                    <div class="info-box bg-gradient-indigo">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center">@Model.TicketType.Name</span>
+                                        </div>
+                                    </div>
+                                }
+                                else if (Model.TicketType.Name == "Production Fix")
+                                {
+                                    <div class="info-box bg-gradient-orange">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center">@Model.TicketType.Name</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                @if (Model.TicketStatus.Name == "New")
+                                {
+                                    <div class="info-box bg-gradient-lightblue">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center">@Model.TicketStatus.Name</span>
+                                        </div>
+                                    </div>
+                                }
+                                else if (Model.TicketStatus.Name == "In Development")
+                                {
+                                    <div class="info-box bg-gradient-primary">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center">@Model.TicketStatus.Name</span>
+                                        </div>
+                                    </div>
+                                }
+                                else if (Model.TicketStatus.Name == "Resolved")
+                                {
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center">@Model.TicketStatus.Name</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                @if (Model.TicketPriority.Name == "Urgent")
+                                {
+                                    <div class="info-box bg-gradient-red">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center">@Model.TicketPriority.Name</span>
+                                        </div>
+                                    </div>
+                                }
+                                else if (Model.TicketPriority.Name == "High")
+                                {
+                                    <div class="info-box bg-gradient-fuchsia">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center">@Model.TicketPriority.Name</span>
+                                        </div>
+                                    </div>
+                                }
+                                else if (Model.TicketPriority.Name == "Medium")
+                                {
+                                    <div class="info-box bg-gradient-teal">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center">@Model.TicketPriority.Name</span>
+                                        </div>
+                                    </div>
+                                }
+                                else if (Model.TicketPriority.Name == "Low")
+                                {
+                                    <div class="info-box bg-gradient-success">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center">@Model.TicketPriority.Name</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Issue History</h4>
+                                <!-- History Here -->
+
+                                @*<div class="post clearfix">
+                                    <div class="user-block">
+                                        <img class="img-circle img-bordered-sm" src="../../dist/img/user7-128x128.jpg" alt="User Image">
+                                        <span class="username">
+                                            <a href="#">Sarah Ross</a>
+                                        </span>
+                                        <span class="description">Sent you a message - 3 days ago</span>
+                                    </div>*@
+                                    <!-- /.user-block -->
+                                    @*<p>
+                                        Lorem ipsum represents a long-held tradition for designers,
+                                        typographers and the like. Some people hate it and argue for
+                                        its demise, but others ignore.
+                                    </p>
+                                    <p>
+                                        <a href="#" class="link-black text-sm"><i class="fas fa-link mr-1"></i> Demo File 2</a>
+                                    </p>
+                                </div>*@
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+                        <h3 class="text-primary"><i class="fas fa-paint-brush"></i> @Model.Title</h3>
+                        <p class="text-muted">@Model.Description</p>
+                        <br>
+                        <div class="text-muted">
+                            <p class="text-sm">
+                                Project
+                                <b class="d-block">@Model.ProjectName</b>
+                            </p>
+                            <p class="text-sm">
+                                Assigned Developer
+                                <b class="d-block">@Model.AssignedToUser</b>
+                            </p>
+                        </div>
+
+                        <h5 class="mt-5 text-muted">Issue Attachments</h5>
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Functional-requirements.docx</a>
+                            </li>
+                            <li>
+                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i> UAT.pdf</a>
+                            </li>
+                            <li>
+                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-envelope"></i> Email-from-flatbal.mln</a>
+                            </li>
+                            <li>
+                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-image "></i> Logo.png</a>
+                            </li>
+                            <li>
+                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Contract-10_12_2014.docx</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <!-- /.card-body -->
-            <div class="card-footer">
-                <span class="text-muted float-right">Last Updated: @Model.Updated.ToString("MM/dd/yyyy h:mm tt")</span>
-            </div>
         </div>
-        
+        <!-- /.card -->
         <!-- Comments and Attachments -->
         @if (User.Identity.IsAuthenticated)
         {
@@ -101,9 +225,9 @@
                     <!-- /.card-tools -->
                 </div>
                 <!-- /.card-header -->
-                
-                        @foreach (var comment in Model.TicketComments)
-                        {
+
+                @foreach (var comment in Model.TicketComments)
+                {
                     <div class="card-body">
 
                         @if (comment.HasPic)
@@ -136,43 +260,43 @@
                         <!-- /.card-comment -->
                     </div>
                     <!-- /.card-footer/comments -->
-                    }
-                    <div class="card-footer">
-                        @using (Html.BeginForm("AddCommentAttachment", "TicketComments", new { TicketId = Model.Id }, FormMethod.Post, new { role = "form", enctype = "Multipart/form-data" }))
-                        {
+                }
+                <div class="card-footer">
+                    @using (Html.BeginForm("AddCommentAttachment", "TicketComments", new { TicketId = Model.Id }, FormMethod.Post, new { role = "form", enctype = "Multipart/form-data" }))
+                    {
                         @Html.AntiForgeryToken()
                         @Html.Hidden("TicketId", Model.Id)
 
-                            <div class="row">
-                                <div class="col-12">
-                                    @Html.Action("CommentProfilePic", "Account")
-                                    <div class="img-push">                               
-                                        @Html.TextArea("Comment", new { @class = "form-control", placeholder = "Leave comment here...", rows = "2" })
-                                    </div>
+                        <div class="row">
+                            <div class="col-12">
+                                @Html.Action("CommentProfilePic", "Account")
+                                <div class="img-push">
+                                    @Html.TextArea("Comment", new { @class = "form-control", placeholder = "Leave comment here...", rows = "2" })
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-9">
-                                    <img class="img-fluid pad padded-top align-content-center" id="preview" style="max-height: 150px;" />
-                                </div>
-                                <div class="col-3">
-                                    <input name="image" type="file" class="form-control" id="fileUpload" style="display: none;" onchange="loadFile(event)" />
-                                    <div class="btn-group padded-top">
-                                        <a class="btn btn-primary" onclick="clicker()"><i class="fas fa-image fa-2x" style="color: white; cursor: pointer;"></i></a>
-                                        <input type="submit" value="Comment" class="btn btn-primary" /> 
-                                    </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-9">
+                                <img class="img-fluid pad padded-top align-content-center" id="preview" style="max-height: 150px;" />
+                            </div>
+                            <div class="col-3">
+                                <input name="image" type="file" class="form-control" id="fileUpload" style="display: none;" onchange="loadFile(event)" />
+                                <div class="btn-group padded-top">
+                                    <a class="btn btn-primary" onclick="clicker()"><i class="fas fa-image fa-2x" style="color: white; cursor: pointer;"></i></a>
+                                    <input type="submit" value="Comment" class="btn btn-primary" />
                                 </div>
                             </div>
-                        }
-                    </div>
-                    <!-- /.card-footer -->
+                        </div>
+                    }
                 </div>
-                <!-- /.card -->
-    }
-    else
-    {
-        <h3 class="text-center">Please Login or Register to View or Leave Comments!</h3>
-    }
+                <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+        }
+        else
+        {
+            <h3 class="text-center">Please Login or Register to View or Leave Comments!</h3>
+        }
 
     </div>
 </div>
