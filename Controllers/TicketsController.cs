@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using ZergTracker.Helper;
 using ZergTracker.Models;
 using ZergTracker.Models.ViewModels;
 
@@ -21,72 +22,34 @@ namespace ZergTracker.Controllers
         {
             if (User.IsInRole("Developer"))
             {
-                TicketViewModel model = new TicketViewModel();
 
-                var userId = User.Identity.GetUserId();
+                var devUserId = User.Identity.GetUserId();
 
-                foreach (var ticket in db.Tickets.Where(u => u.AssignedToUserId == userId))
-                {
-                    model.Id = ticket.Id;
-                    model.OwnerUser = ticket.OwnerUser;
-                    model.ProjectName = db.Projects.FirstOrDefault(p => p.Id == ticket.ProjectId).Name;
-                    model.TicketType = ticket.TicketType;
-                    model.TicketStatus = ticket.TicketStatus;
-                    model.TicketPriority = ticket.TicketPriority;
-                    model.Title = ticket.Title;
-                    model.Description = ticket.Description;
-                    model.AssignedToUser = ticket.AssignedToUser;
-                    model.Created = ticket.Created;
-                    model.Updated = ticket.Updated;
-                    model.TicketComments = ticket.TicketComments;
-                    model.TicketAttachments = ticket.TicketAttachments;
-                }
-                return View(model);
+                return View(db.Tickets.Where(u => u.AssignedToUserId == devUserId).ToList());
             }
             else if (User.IsInRole("Submitter"))
             {
-                TicketViewModel model = new TicketViewModel();
 
-                var userId = User.Identity.GetUserId();
+                var subUserId = User.Identity.GetUserId();
 
-                foreach (var ticket in db.Tickets.Where(u => u.OwnerUserId == userId))
-                {
-                    model.Id = ticket.Id;
-                    model.OwnerUser = ticket.OwnerUser;
-                    model.ProjectName = db.Projects.FirstOrDefault(p => p.Id == ticket.ProjectId).Name;
-                    model.TicketType = ticket.TicketType;
-                    model.TicketStatus = ticket.TicketStatus;
-                    model.TicketPriority = ticket.TicketPriority;
-                    model.Title = ticket.Title;
-                    model.Description = ticket.Description;
-                    model.AssignedToUser = ticket.AssignedToUser;
-                    model.Created = ticket.Created;
-                    model.Updated = ticket.Updated;
-                    model.TicketComments = ticket.TicketComments;
-                    model.TicketAttachments = ticket.TicketAttachments;
-                }
-                return View(model);
+                return View(db.Tickets.Where(u => u.OwnerUserId == subUserId).ToList());
             }
 
-            TicketViewModel model = new TicketViewModel();
 
-            foreach (var ticket in db.Tickets.ToList())
-            {
-                model.Id = ticket.Id;
-                model.OwnerUser = ticket.OwnerUser;
-                model.ProjectName = db.Projects.FirstOrDefault(p => p.Id == ticket.ProjectId).Name;
-                model.TicketType = ticket.TicketType;
-                model.TicketStatus = ticket.TicketStatus;
-                model.TicketPriority = ticket.TicketPriority;
-                model.Title = ticket.Title;
-                model.Description = ticket.Description;
-                model.AssignedToUser = ticket.AssignedToUser;
-                model.Created = ticket.Created;
-                model.Updated = ticket.Updated;
-                model.TicketComments = ticket.TicketComments;
-                model.TicketAttachments = ticket.TicketAttachments;
-            }
-            return View(model);
+            return View(db.Tickets.ToList()); ;
+        }
+
+        //POST Assign a Dev to Ticket
+        public ActionResult AssignDev(string assignedDev, int unassignedTickets)
+        {
+
+            var ticket = db.Tickets.Find(unassignedTickets);
+            
+            ticket.AssignedToUserId = assignedDev;
+            ticket.AssignedToUser = db.Users.Find(assignedDev);
+            db.SaveChanges();
+
+            return RedirectToAction("Index", "Tickets");
         }
 
         // GET: Tickets/Details/5
@@ -106,7 +69,7 @@ namespace ZergTracker.Controllers
 
             model.Id = ticket.Id;
             model.OwnerUser = ticket.OwnerUser;
-            model.ProjectName = db.Projects.FirstOrDefault(p => p.Id == ticket.ProjectId).Name;
+            model.ProjectName = ticket.ProjectName;
             model.TicketType = ticket.TicketType;
             model.TicketStatus = ticket.TicketStatus;
             model.TicketPriority = ticket.TicketPriority;
@@ -140,7 +103,7 @@ namespace ZergTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,AssignedToUserId")] Ticket ticket)
+        public ActionResult Create([Bind(Include = "Id,Title,Description,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId")] Ticket ticket, int ProjectId)
         {
             if (ModelState.IsValid)
             {   
@@ -150,6 +113,7 @@ namespace ZergTracker.Controllers
                 var user = db.Users.Find(userId);
                 ticket.OwnerUserId = userId;
                 ticket.OwnerUser = user;
+                ticket.ProjectName = db.Projects.SingleOrDefault(n => n.Id == ProjectId)?.Name;
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
 
@@ -187,13 +151,20 @@ namespace ZergTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,Created,Updated,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,AssignedToUserId")] Ticket ticket)
+        public ActionResult Edit([Bind(Include = "Id,Title,Description,Created,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,AssignedToUserId")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
+                var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
+                ticket.Updated = DateTimeOffset.Now;
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                HistoryHelper helper = new HistoryHelper();
+                var newTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
+                var userId = User.Identity.GetUserId();
+                helper.UpdateHistory(oldTicket, newTicket, userId);
+                return RedirectToAction("Details", "Tickets", new { id = ticket.Id});
             }
             ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
             ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);

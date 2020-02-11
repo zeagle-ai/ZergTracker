@@ -15,26 +15,69 @@
     </li>
 
 
-<div class="modal fade" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="addTicket">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5>Please Select A Project To Add Issue</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @using (Html.BeginForm("Create", "Tickets", FormMethod.Get))
-            {
-                @Html.AntiForgeryToken()
-                <div class="modal-body">
-                    @Html.DropDownListFor(p => p.ProjectId, null, new { @class = "form-control" })
+    <div class="modal fade" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="addTicket">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Please Select A Project To Add Issue</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="modal-footer">
-                    <input type="submit" value="Add Issue" class="btn btn-primary" style="color: white;" />
-                </div>
-            }
+                @using (Html.BeginForm("Create", "Tickets", FormMethod.Get))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="modal-body">
+                        @Html.DropDownListFor(p => p.ProjectId, null, new { @class = "form-control" })
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" value="Add Issue" class="btn btn-primary" style="color: white;" />
+                    </div>
+                }
             </div>
+        </div>
     </div>
-</div>
+}
+
+@if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+{
+    <li class="nav-item">
+        <a data-toggle="modal" data-target="#addDev" class="nav-link" style="cursor: pointer">
+            <i class="nav-icon fas fa-plus"></i>
+            <p>
+                Assign Dev
+            </p>
+        </a>
+    </li>
+
+    <div class="modal fade" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="addDev">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Select an Issue and a Dev to Assign</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @using (Html.BeginForm("AssignDev", "Tickets", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="modal-body">
+                        <div class="row padded-top">
+                            <h5>Dev to be Assigned:</h5>
+                            @Html.DropDownListFor(p => p.AssignedDev, null, new { @class = "form-control" })
+                        </div>
+                        <div class="row padded-top">
+                            <h5>Unassigned Issues:</h5>
+                            @Html.DropDownListFor(p => p.UnassignedTickets, null, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" value="Assign Dev" class="btn btn-primary" style="color: white;" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
 }

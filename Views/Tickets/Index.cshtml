@@ -1,4 +1,4 @@
-﻿@model ZergTracker.Models.ViewModels.TicketViewModel
+﻿@model IEnumerable<ZergTracker.Models.Ticket>
 
 @{
     ViewBag.Title = "Index";
@@ -85,7 +85,7 @@
                                         @item.Created.ToString("MMM dd, yyyy")
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.ProjectId)
+                                        @Html.DisplayFor(modelItem => item.ProjectName)
                                     </td>
                                     <td>
                                         <a class="btn btn-primary btn-sm" href="@Url.Action("Details", new { id = item.Id })">

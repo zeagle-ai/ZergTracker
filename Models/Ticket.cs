@@ -20,6 +20,7 @@ namespace ZergTracker.Models
         public DateTimeOffset Created { get; set; }
         public DateTimeOffset Updated { get; set; }
         public int ProjectId { get; set; }
+        public string ProjectName { get; set; }
         public int TicketTypeId { get; set; }
         public int TicketPriorityId { get; set; }
         public int TicketStatusId { get; set; }

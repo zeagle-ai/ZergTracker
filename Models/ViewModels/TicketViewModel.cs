@@ -37,5 +37,8 @@ namespace ZergTracker.Models.ViewModels
         public TicketType TicketType { get; set; }
         public ApplicationUser OwnerUser { get; set; }
         public ApplicationUser AssignedToUser { get; set; }
+        public string AssignedDev { get; set; }
+        public ICollection<Ticket> UnassignedTickets { get; set; }
+        public int UnassignedTicketCount { get; set; }
     }
 }

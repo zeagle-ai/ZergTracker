@@ -182,6 +182,8 @@ namespace ZergTracker.Controllers
         {
             var userId = User.Identity.GetUserId();
             ViewBag.ProjectId = new SelectList(db.Projects.Where(u => u.Users.Any(i => i.Id == userId)), "Id", "Name");
+            ViewBag.AssignedDev = new SelectList(db.Users.Where(r => r.Roles.Any(d => d.RoleId == "c4e1a39e-19a2-45b3-80be-46f9c2fa45ca")), "Id", "FirstName");
+            ViewBag.UnassignedTickets = new SelectList(db.Tickets.Where(a => a.AssignedToUserId == null), "Id", "Title");
 
             return View();
         }

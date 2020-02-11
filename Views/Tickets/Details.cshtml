@@ -141,65 +141,71 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <h4>Issue History</h4>
-                                <!-- History Here -->
-
-                                @*<div class="post clearfix">
-                                    <div class="user-block">
-                                        <img class="img-circle img-bordered-sm" src="../../dist/img/user7-128x128.jpg" alt="User Image">
-                                        <span class="username">
-                                            <a href="#">Sarah Ross</a>
-                                        </span>
-                                        <span class="description">Sent you a message - 3 days ago</span>
-                                    </div>*@
-                                    <!-- /.user-block -->
-                                    @*<p>
-                                        Lorem ipsum represents a long-held tradition for designers,
-                                        typographers and the like. Some people hate it and argue for
-                                        its demise, but others ignore.
+                                <h3 class="text-primary"><i class="far fa-arrow-alt-circle-right"></i> @Model.Title</h3>
+                                <p class="text-muted">@Model.Description</p>
+                                <br>
+                                <div class="text-muted">
+                                    <p class="text-sm">
+                                        Project
+                                        <b class="d-block">@Model.ProjectName</b>
                                     </p>
-                                    <p>
-                                        <a href="#" class="link-black text-sm"><i class="fas fa-link mr-1"></i> Demo File 2</a>
+                                    <p class="text-sm">
+                                        Assigned Developer
+                                        <b class="d-block">@Model.AssignedToUser.FirstName @Model.AssignedToUser.LastName</b>
                                     </p>
-                                </div>*@
-
-
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
-                        <h3 class="text-primary"><i class="fas fa-paint-brush"></i> @Model.Title</h3>
-                        <p class="text-muted">@Model.Description</p>
-                        <br>
-                        <div class="text-muted">
-                            <p class="text-sm">
-                                Project
-                                <b class="d-block">@Model.ProjectName</b>
-                            </p>
-                            <p class="text-sm">
-                                Assigned Developer
-                                <b class="d-block">@Model.AssignedToUser</b>
-                            </p>
-                        </div>
+                        <h4>Issue History</h4>
+                        <!-- History Here -->
+                        @foreach (var history in Model.TicketHistories)
+                        {
+                            if (Model.Id == history.TicketId)
+                            {
+                                <div class="post clearfix">
+                                    <div class="user-block">
+                                        <img class="img-circle img-bordered-sm" src="@history.User.ProfilePic" alt="User Image">
+                                        <span class="username">
+                                            <a href="#">@history.User.FirstName @history.User.LastName</a>
+                                        </span>
+                                        <span class="description">Value Changed: @history.Property</span>
+                                    </div>
+                                    <!-- /.user-block -->
+                                    <p>
+                                        Old: @history.OldValue
+                                        New: @history.NewValue
+                                    </p>
+                                    <p>
+                                        <a class="link-black text-sm"><i class="fas fa-clock mr-1"></i>@history.Changed</a>
+                                    </p>
+                                </div>
+                            }
+                        }
 
                         <h5 class="mt-5 text-muted">Issue Attachments</h5>
-                        <ul class="list-unstyled">
-                            <li>
-                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Functional-requirements.docx</a>
-                            </li>
-                            <li>
-                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i> UAT.pdf</a>
-                            </li>
-                            <li>
-                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-envelope"></i> Email-from-flatbal.mln</a>
-                            </li>
-                            <li>
-                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-image "></i> Logo.png</a>
-                            </li>
-                            <li>
-                                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Contract-10_12_2014.docx</a>
-                            </li>
-                        </ul>
+                        <hr />
+
+                        @foreach (var attachment in Model.TicketAttachments)
+                        {
+                            if (attachment.TicketId == Model.Id)
+                            {
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <a data-toggle="modal" data-target="#@attachment.Id" style="cursor: pointer" class="btn-link text-secondary"><i class="far fa-fw fa-image"></i> @attachment.FilePath.Remove(0, 9)</a>
+                                    </li>
+                                </ul>
+
+                                <div class="modal fade" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="@attachment.Id">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <img src="@attachment.FilePath" class="img-fluid" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
                     </div>
                 </div>
             </div>
