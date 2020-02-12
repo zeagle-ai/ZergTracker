@@ -188,6 +188,27 @@ namespace ZergTracker.Controllers
             return View();
         }
 
+        //GET Notifications
+        public ActionResult Notifications()
+        {
+            NotificationsViewModel notification = new NotificationsViewModel();
+
+            var userId = User.Identity.GetUserId();
+            notification.NotifCount = 0;
+            foreach (var notif in db.TicketNotifications)
+            {
+                if (notif.RecipientUserId == userId && notif.HasBeenRead == false)
+                {
+                    notification.NotifCount++;
+                    notification.Created = notif.Created;
+                    notification.NotifBody = notif.NotifBody;
+                    notification.NotifType = notif.NotifType;
+                    notification.TicketId = notif.TicketId;
+                }
+            }
+            return View(notification);
+        }
+
         //
         // POST: /Account/Register
         [HttpPost]

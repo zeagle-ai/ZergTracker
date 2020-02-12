@@ -182,6 +182,7 @@
     </Compile>
     <Compile Include="Helper\HistoryHelper.cs" />
     <Compile Include="Helper\ImageUploadValidator.cs" />
+    <Compile Include="Helper\NotifManager.cs" />
     <Compile Include="Helper\UserProjectsHelper.cs" />
     <Compile Include="Helper\UserRolesHelper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -379,7 +380,6 @@
     <Content Include="Views\Projects\AllProjects.cshtml" />
     <Content Include="Views\Account\NavRoleItems.cshtml" />
     <Content Include="Views\Account\CommentProfilePic.cshtml" />
-    <Content Include="Views\Account\Notifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

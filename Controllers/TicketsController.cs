@@ -47,8 +47,11 @@ namespace ZergTracker.Controllers
             
             ticket.AssignedToUserId = assignedDev;
             ticket.AssignedToUser = db.Users.Find(assignedDev);
+            var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
             db.SaveChanges();
 
+            var newTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
+            NotifManager.ManageTicketNotifs(oldTicket, newTicket);
             return RedirectToAction("Index", "Tickets");
         }
 
@@ -164,6 +167,7 @@ namespace ZergTracker.Controllers
                 var newTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
                 var userId = User.Identity.GetUserId();
                 helper.UpdateHistory(oldTicket, newTicket, userId);
+                NotifManager.ManageTicketNotifs(oldTicket, newTicket);
                 return RedirectToAction("Details", "Tickets", new { id = ticket.Id});
             }
             ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);

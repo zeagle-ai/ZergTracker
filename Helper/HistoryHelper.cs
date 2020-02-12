@@ -74,12 +74,54 @@ namespace ZergTracker.Helper
                 db.TicketHistories.Add(history);
                 db.SaveChanges();
             }
-            if (oldTicket.AssignedToUserId != newTicket.AssignedToUserId)
+            if (oldTicket.AssignedToUserId != null)
+            {
+                if (oldTicket.AssignedToUserId != newTicket.AssignedToUserId)
+                {
+                    history.TicketId = newTicket.Id;
+                    history.Property = "Developer";
+                    history.OldValue = oldTicket.AssignedToUserId;
+                    history.NewValue = newTicket.AssignedToUserId;
+                    history.Changed = DateTimeOffset.Now;
+                    history.UserId = userId;
+                    history.User = db.Users.Find(userId);
+                    db.TicketHistories.Add(history);
+                    db.SaveChanges();
+                }
+            }
+            else
+            {
+                history.TicketId = newTicket.Id;
+                history.Property = "Developer";
+                history.OldValue = "No Dev Assigned";
+                history.NewValue = newTicket.AssignedToUserId;
+                history.Changed = DateTimeOffset.Now;
+                history.UserId = userId;
+                history.User = db.Users.Find(userId);
+                db.TicketHistories.Add(history);
+                db.SaveChanges();
+            }
+            if (newTicket.AssignedToUserId != null)
+            {
+                if (oldTicket.AssignedToUserId != newTicket.AssignedToUserId)
+                {
+                    history.TicketId = newTicket.Id;
+                    history.Property = "Developer";
+                    history.OldValue = oldTicket.AssignedToUserId;
+                    history.NewValue = newTicket.AssignedToUserId;
+                    history.Changed = DateTimeOffset.Now;
+                    history.UserId = userId;
+                    history.User = db.Users.Find(userId);
+                    db.TicketHistories.Add(history);
+                    db.SaveChanges();
+                }
+            }
+            else
             {
                 history.TicketId = newTicket.Id;
                 history.Property = "Developer";
                 history.OldValue = oldTicket.AssignedToUserId;
-                history.NewValue = newTicket.AssignedToUserId;
+                history.NewValue = "No Dev Assigned";
                 history.Changed = DateTimeOffset.Now;
                 history.UserId = userId;
                 history.User = db.Users.Find(userId);

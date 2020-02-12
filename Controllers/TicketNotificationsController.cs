@@ -17,7 +17,7 @@ namespace ZergTracker.Controllers
         // GET: TicketNotifications
         public ActionResult Index()
         {
-            var ticketNotifications = db.TicketNotifications.Include(t => t.Ticket).Include(t => t.User);
+            var ticketNotifications = db.TicketNotifications.Include(t => t.Ticket).Include(t => t.RecipientUser).Include(t => t.NewUser);
             return View(ticketNotifications.ToList());
         }
 
@@ -59,7 +59,7 @@ namespace ZergTracker.Controllers
             }
 
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title", ticketNotification.TicketId);
-            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketNotification.UserId);
+            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketNotification.RecipientUserId);
             return View(ticketNotification);
         }
 
@@ -76,7 +76,7 @@ namespace ZergTracker.Controllers
                 return HttpNotFound();
             }
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title", ticketNotification.TicketId);
-            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketNotification.UserId);
+            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketNotification.RecipientUserId);
             return View(ticketNotification);
         }
 
@@ -94,7 +94,7 @@ namespace ZergTracker.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title", ticketNotification.TicketId);
-            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketNotification.UserId);
+            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketNotification.RecipientUserId);
             return View(ticketNotification);
         }
 

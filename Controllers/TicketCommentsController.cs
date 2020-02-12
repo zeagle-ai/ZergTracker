@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using ZergTracker.Helper;
 using ZergTracker.Models;
 
 namespace ZergTracker.Controllers
@@ -85,6 +86,7 @@ namespace ZergTracker.Controllers
                 ticketComment.Created = DateTimeOffset.Now;
                 db.TicketComments.Add(ticketComment);
                 db.SaveChanges();
+                
 
                 if (ImageUploadValidator.IsWebFriendlyImage(image))
                 {
@@ -105,6 +107,7 @@ namespace ZergTracker.Controllers
                     ticketComment.HasPic = false;
                 }
 
+                NotifManager.ManageCommentNotifs(ticketComment);
                 var tickId = db.Tickets.Find(TicketId).Id;
                 return RedirectToAction("Details", "Tickets", new { Id = tickId });
             }
