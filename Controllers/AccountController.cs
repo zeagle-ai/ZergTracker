@@ -148,67 +148,6 @@ namespace ZergTracker.Controllers
             return View();
         }
 
-        // Get Profile info in sidebar
-        [AllowAnonymous]
-        public ActionResult UserProfileInfo()
-        {
-            ApplicationUser user = new ApplicationUser();
-            if (User.Identity.IsAuthenticated)
-            {
-                var userId = User.Identity.GetUserId();
-                user = db.Users.FirstOrDefault(u => u.Id == userId);
-            }
-            else
-            {
-                user.FirstName = "Anonymous";
-                user.LastName = "User";
-                user.ProfilePic = "/assets/img/defaults/default-profile-pic-1.png";
-            }
-            return View(user);
-        }
-
-        //Get Comment Profile Pic
-        public ActionResult CommentProfilePic()
-        {
-            ApplicationUser user = new ApplicationUser();
-            var userId = User.Identity.GetUserId();
-            user = db.Users.FirstOrDefault(u => u.Id == userId);
-
-            return View(user);
-        }
-
-        [AllowAnonymous] // Change this to only submitters
-        public ActionResult NavRoleItems()
-        {
-            var userId = User.Identity.GetUserId();
-            ViewBag.ProjectId = new SelectList(db.Projects.Where(u => u.Users.Any(i => i.Id == userId)), "Id", "Name");
-            ViewBag.AssignedDev = new SelectList(db.Users.Where(r => r.Roles.Any(d => d.RoleId == "c4e1a39e-19a2-45b3-80be-46f9c2fa45ca")), "Id", "FirstName");
-            ViewBag.UnassignedTickets = new SelectList(db.Tickets.Where(a => a.AssignedToUserId == null), "Id", "Title");
-
-            return View();
-        }
-
-        //GET Notifications
-        public ActionResult Notifications()
-        {
-            NotificationsViewModel notification = new NotificationsViewModel();
-
-            var userId = User.Identity.GetUserId();
-            notification.NotifCount = 0;
-            foreach (var notif in db.TicketNotifications)
-            {
-                if (notif.RecipientUserId == userId && notif.HasBeenRead == false)
-                {
-                    notification.NotifCount++;
-                    notification.Created = notif.Created;
-                    notification.NotifBody = notif.NotifBody;
-                    notification.NotifType = notif.NotifType;
-                    notification.TicketId = notif.TicketId;
-                }
-            }
-            return View(notification);
-        }
-
         //
         // POST: /Account/Register
         [HttpPost]

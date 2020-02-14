@@ -26,7 +26,7 @@ namespace ZergTracker.Helper
             if (assigned)
             {
                 notif.RecipientUserId = newTicket.AssignedToUserId;
-                notif.NotifBody = $"You have been assigned to Ticket ID: {newTicket.Id}, titled: {newTicket.Title}";
+                notif.NotifBody = $"Assigned: {newTicket.Title}";
                 notif.NotifType = "Urgent";
                 notif.Created = DateTime.Now;
                 GenerateNotif(notif);
@@ -35,7 +35,7 @@ namespace ZergTracker.Helper
             else if (unassigned)
             {
                 notif.RecipientUserId = oldTicket.AssignedToUserId;
-                notif.NotifBody = $"You have been unassigned to Ticket ID: {oldTicket.Id}, titled: {oldTicket.Title}";
+                notif.NotifBody = $"Unassigned: {newTicket.Title}";
                 notif.NotifType = "Low";
                 notif.Created = DateTime.Now;
                 GenerateNotif(notif);

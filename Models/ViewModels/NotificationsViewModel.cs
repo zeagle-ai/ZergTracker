@@ -16,5 +16,6 @@ namespace ZergTracker.Models.ViewModels
         public DateTime Created { get; set; }
         public int NotifCount { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
+        public List<TicketNotification> Notifs { get; set; }
     }
 }

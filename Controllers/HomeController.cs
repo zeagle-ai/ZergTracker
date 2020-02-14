@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using ZergTracker.Helper;
 using ZergTracker.Models;
 using ZergTracker.Models.ViewModels;
 
@@ -12,10 +13,12 @@ namespace ZergTracker.Controllers
 {
     public class HomeController : Controller
     {
+        ApplicationDbContext db = new ApplicationDbContext();
+
+        [Authorize]
         public ActionResult Index()
         {
             DashboardViewModel model = new DashboardViewModel();
-            ApplicationDbContext db = new ApplicationDbContext();
 
             model.ProjectCount = db.Projects.Count();
             model.TicketCount = db.Tickets.Count();
@@ -51,6 +54,88 @@ namespace ZergTracker.Controllers
             EmailModel model = new EmailModel();
 
             return View(model);
+        }
+
+        // Get Profile info in sidebar
+        [AllowAnonymous]
+        public ActionResult UserProfileInfo()
+        {
+            ApplicationUser user = new ApplicationUser();
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = User.Identity.GetUserId();
+                user = db.Users.FirstOrDefault(u => u.Id == userId);
+            }
+            else
+            {
+                user.FirstName = "Anonymous";
+                user.LastName = "User";
+                user.ProfilePic = "/assets/img/defaults/default-profile-pic-1.png";
+            }
+            return View(user);
+        }
+
+        //Get Comment Profile Pic
+        public ActionResult CommentProfilePic()
+        {
+            ApplicationUser user = new ApplicationUser();
+            var userId = User.Identity.GetUserId();
+            user = db.Users.FirstOrDefault(u => u.Id == userId);
+
+            return View(user);
+        }
+
+        [AllowAnonymous] // Change this to only submitters
+        public ActionResult NavRoleItems()
+        {
+            var userId = User.Identity.GetUserId();
+            ViewBag.ProjectId = new SelectList(db.Projects.Where(u => u.Users.Any(i => i.Id == userId)), "Id", "Name");
+            ViewBag.AssignedDev = new SelectList(db.Users.Where(r => r.Roles.Any(d => d.RoleId == "c4e1a39e-19a2-45b3-80be-46f9c2fa45ca")), "Id", "FirstName");
+            ViewBag.UnassignedTickets = new SelectList(db.Tickets.Where(a => a.AssignedToUserId == null), "Id", "Title");
+
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult GetTicketsByProject(string devs)
+        {
+            if (!string.IsNullOrWhiteSpace(devs))
+            {
+                UserProjectsHelper helper = new UserProjectsHelper();
+
+                IEnumerable<SelectListItem> ticketsByProj = helper.EnumerateUserProjectTickets(devs);
+                return Json(ticketsByProj, JsonRequestBehavior.AllowGet);
+            }
+            return null;
+        }
+
+        //GET Notifications
+
+        public ActionResult Notifications()
+        {
+            NotificationsViewModel notification = new NotificationsViewModel();
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = User.Identity.GetUserId();
+                notification.Notifs = db.TicketNotifications.Where(t => t.RecipientUserId == userId).Where(r => r.HasBeenRead == false).ToList();
+            }
+
+            return View(notification);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Notifications(int id, int ticketId)
+        {
+            var notif = db.TicketNotifications.Find(id);
+            notif.HasBeenRead = true;
+            var ticket = db.Tickets.Find(ticketId);
+            ticket.Updated = DateTimeOffset.Now;
+
+            db.SaveChanges();
+
+            return RedirectToAction("Details", "Tickets", new { id = ticketId });
         }
 
         [HttpPost]

@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using ZergTracker.Helper;
@@ -40,10 +41,12 @@ namespace ZergTracker.Controllers
         }
 
         //POST Assign a Dev to Ticket
-        public ActionResult AssignDev(string assignedDev, int unassignedTickets)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AssignDev(string assignedDev, string UnassignedTickets)
         {
 
-            var ticket = db.Tickets.Find(unassignedTickets);
+            var ticket = db.Tickets.Find(Int32.Parse(UnassignedTickets));
             
             ticket.AssignedToUserId = assignedDev;
             ticket.AssignedToUser = db.Users.Find(assignedDev);
@@ -52,6 +55,55 @@ namespace ZergTracker.Controllers
 
             var newTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
             NotifManager.ManageTicketNotifs(oldTicket, newTicket);
+
+            var redirectUrl = Url.Action("Details", "Tickets", new { id = ticket.Id }, protocol: Request.Url.Scheme);
+
+            try
+            {
+                EmailService ems = new EmailService();
+                IdentityMessage msg = new IdentityMessage();
+                ApplicationUser user = db.Users.Find(ticket.AssignedToUserId);
+
+                msg.Body = "You have been assigned a new Ticket. " +
+                    "Please click the following link to view the details  <a href=\"" + redirectUrl + "\">New Ticket</a>";
+
+                msg.Destination = user.Email;
+                msg.Subject = "You have been assigned a new Ticket";
+
+                await ems.SendMailAsync(msg);
+            }
+            catch (Exception ex)
+            {
+                await Task.FromResult(0);
+            }
+
+            return RedirectToAction("Index", "Tickets");
+        }
+
+
+        public async Task<ActionResult> EmailTicket(Ticket ticket)
+        {
+            var redirectUrl = Url.Action("Details", "Tickets", new { id = ticket.Id }, protocol: Request.Url.Scheme);
+
+            try
+            {
+                EmailService ems = new EmailService();
+                IdentityMessage msg = new IdentityMessage();
+                ApplicationUser user = db.Users.Find(ticket.AssignedToUserId);
+
+                msg.Body = "You have been assigned a new Ticket. " +
+                    "Please click the following link to view the details  <a href=\"" + redirectUrl + "\">New Ticket</a>";
+
+                msg.Destination = user.Email;
+                msg.Subject = "You have been assigned a new Ticket";
+
+                await ems.SendMailAsync(msg);
+            }
+            catch (Exception ex)
+            {
+                await Task.FromResult(0);
+            }
+
             return RedirectToAction("Index", "Tickets");
         }
 

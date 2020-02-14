@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using ZergTracker.Models;
 
 namespace ZergTracker.Helper
@@ -24,6 +25,14 @@ namespace ZergTracker.Helper
 
             var projects = user.Projects.ToList();
             return (projects);
+        }
+
+        public List<SelectListItem> EnumerateUserProjectTickets(string userId)
+        {
+            ApplicationUser user = db.Users.Find(userId);
+
+            var projects = user.Projects.SelectMany(t => t.Tickets).Where(a => a.AssignedToUserId == null).Select(t => new SelectListItem() { Text = t.Title, Value = t.Id.ToString() });
+            return new List<SelectListItem>(projects);
         }
 
         public void AddUserToProject(string userId, int projectId)

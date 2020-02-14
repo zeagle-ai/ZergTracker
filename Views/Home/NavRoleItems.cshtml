@@ -65,11 +65,11 @@
                     <div class="modal-body">
                         <div class="row padded-top">
                             <h5>Dev to be Assigned:</h5>
-                            @Html.DropDownListFor(p => p.AssignedDev, null, new { @class = "form-control" })
+                            @Html.DropDownListFor(p => p.AssignedDev, null, new { @class = "form-control", id = "devs" })
                         </div>
                         <div class="row padded-top">
                             <h5>Unassigned Issues:</h5>
-                            @Html.DropDownListFor(p => p.UnassignedTickets, null, new { @class = "form-control" })
+                            @Html.DropDownListFor(p => p.UnassignedTickets, null, new { @class = "form-control", id = "ticketsByProject" })
                         </div>
                     </div>
                     <div class="modal-footer">

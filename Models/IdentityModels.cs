@@ -13,6 +13,7 @@ namespace ZergTracker.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string ProfilePic { get; set; }
+        public string SelectedRole { get; set; }
 
         public ApplicationUser()
         {
@@ -28,6 +29,7 @@ namespace ZergTracker.Models
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
+            //userIdentity.AddClaim(new Claim(ClaimValueTypes.String, SelectedRole));
             return userIdentity;
         }
     }

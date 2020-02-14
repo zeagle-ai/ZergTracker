@@ -51,10 +51,12 @@
                     <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="@Url.Action("Contact","Home")" class="nav-link">Contact</a>
+                    <a href="@Url.Action("Contact", "Home")" class="nav-link">Contact</a>
                 </li>
                 @Html.Partial("_LoginPartial")
             </ul>
+
+            @Html.Action("Notifications", "Home")
 
             <!-- SEARCH FORM -->
             <form class="form-inline ml-3">
@@ -81,7 +83,7 @@
             <!-- Sidebar -->
             <div class="sidebar">
 
-                @Html.Action("UserProfileInfo", "Account")
+                @Html.Action("UserProfileInfo", "Home")
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
@@ -89,7 +91,7 @@
                         <!-- Add icons to the links using the .nav-icon class
                             with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a href="@Url.Action("Index","Home")" class="nav-link">
+                            <a href="@Url.Action("Index", "Home")" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -121,7 +123,7 @@
                             </a>
                         </li>
 
-                        @Html.Action("NavRoleItems", "Account")
+                        @Html.Action("NavRoleItems", "Home")
 
                     </ul>
                 </nav>
@@ -176,8 +178,43 @@
     <script src="~/assets/js/adminlte.js"></script>
     <!-- Cutom JS -->
     <script src="~/Assets/js/custom.js"></script>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")*@
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            getData();
+        });
+
+        $('#devs').change(function () {
+            getData();
+        });
+        function getData() {
+            var selectedDev = $("#devs").val();
+                var ticketsSelect = $('#ticketsByProject');
+                ticketsSelect.empty();
+                if (selectedDev != null && selectedDev != '') {
+                    $.getJSON('@Url.Action("GetTicketsByProject", "Home")', { devs: selectedDev })
+                        .done(function (ticketsByProj) {
+                        if (ticketsByProj != null && !jQuery.isEmptyObject(ticketsByProj))
+                        {
+                            ticketsSelect.append($('<option/>', {
+                                value: null,
+                                text: "Expand to see Dev Project Tickets"
+                            }));
+                            $.each(ticketsByProj, function (key,value) {
+                                ticketsSelect.append($('<option/>', {
+                                    value: value.Value,
+                                    text: value.Text
+                                }));
+                            });
+                        }
+                    });
+                }
+        }
+    </script>
+
     @RenderSection("scripts", required: false)
+
 </body>
 </html>

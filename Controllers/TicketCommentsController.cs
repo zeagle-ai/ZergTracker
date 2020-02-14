@@ -65,6 +65,7 @@ namespace ZergTracker.Controllers
                 db.TicketComments.Add(ticketComment);
                 db.SaveChanges();
                 var tickId = db.Tickets.Find(TicketId).Id;
+                NotifManager.ManageCommentNotifs(ticketComment);
                 return RedirectToAction("Details", "Tickets", new { Id = tickId });
             }
 

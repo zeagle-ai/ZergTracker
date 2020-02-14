@@ -1,0 +1,45 @@
+﻿@model ZergTracker.Models.ViewModels.NotificationsViewModel
+
+@{
+    Layout = null;
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+        <!-- Notifications Dropdown Menu -->
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#">
+                <i class="far fa-bell"></i>
+                @if (@Model.Notifs.Count() > 0)
+                {
+                    <span class="badge badge-danger navbar-badge">@Model.Notifs.Count()</span>
+                }
+            </a>
+            <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right">
+                <span class="dropdown-item dropdown-header">@Model.Notifs.Count() Notifications</span>
+                @*<div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item">
+                    <i class="fas fa-users mr-2"></i> 8 friend requests
+                    <span class="float-right text-muted text-sm">12 hours</span>
+                </a>*@
+                @foreach (var notif in Model.Notifs)
+                {
+                    using (Html.BeginForm("Notifications", "Home", new { id = notif.Id, ticketId = notif.TicketId }, FormMethod.Post, new { id = "notifSub" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="dropdown-divider"></div>
+                        <a onclick="document.getElementById('notifSub').submit()" class="dropdown-item" style="cursor: pointer">
+                            <i class="fas fa-file mr-2"></i>@notif.NotifBody
+                            <span class="float-right text-muted text-sm">@notif.Created.ToString("g")</span>
+                        </a>
+                    }
+                }
+                @*<div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>*@
+            </div>
+        </li>
+    </ul>
+}
+

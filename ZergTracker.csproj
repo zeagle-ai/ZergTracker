@@ -185,6 +185,10 @@
     <Compile Include="Helper\NotifManager.cs" />
     <Compile Include="Helper\UserProjectsHelper.cs" />
     <Compile Include="Helper\UserRolesHelper.cs" />
+    <Compile Include="Migrations\202002141435178_ProjectId-Error.cs" />
+    <Compile Include="Migrations\202002141435178_ProjectId-Error.Designer.cs">
+      <DependentUpon>202002141435178_ProjectId-Error.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\EmailModel.cs" />
@@ -374,12 +378,13 @@
     <Content Include="Views\TicketNotifications\Index.cshtml" />
     <Content Include="Views\Roles\Personnel.cshtml" />
     <Content Include="Views\Manage\ChangeName.cshtml" />
-    <Content Include="Views\Account\UserProfileInfo.cshtml" />
+    <Content Include="Views\Home\UserProfileInfo.cshtml" />
     <Content Include="Views\Account\ResendEmailConfirmation.cshtml" />
     <Content Include="Views\Account\ConfirmationSent.cshtml" />
     <Content Include="Views\Projects\AllProjects.cshtml" />
-    <Content Include="Views\Account\NavRoleItems.cshtml" />
-    <Content Include="Views\Account\CommentProfilePic.cshtml" />
+    <Content Include="Views\Home\NavRoleItems.cshtml" />
+    <Content Include="Views\Home\CommentProfilePic.cshtml" />
+    <Content Include="Views\Home\Notifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -397,6 +402,11 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202002141435178_ProjectId-Error.resx">
+      <DependentUpon>202002141435178_ProjectId-Error.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
