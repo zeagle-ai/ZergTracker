@@ -109,8 +109,8 @@ namespace ZergTracker.Controllers
             return null;
         }
 
-        //GET Notifications
 
+        //GET Notifications
         public ActionResult Notifications()
         {
             NotificationsViewModel notification = new NotificationsViewModel();
@@ -132,6 +132,8 @@ namespace ZergTracker.Controllers
             notif.HasBeenRead = true;
             var ticket = db.Tickets.Find(ticketId);
             ticket.Updated = DateTimeOffset.Now;
+            var inDev = db.TicketStatuses.FirstOrDefault(i => i.Name == "In Development").Id;
+            ticket.TicketStatusId = inDev;
 
             db.SaveChanges();
 
