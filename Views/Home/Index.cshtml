@@ -1,6 +1,6 @@
 ﻿@model ZergTracker.Models.ViewModels.DashboardViewModel
 
-    <!-- Content Header (Page header) -->
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -109,7 +109,7 @@
             <div class="row">
                 @if ((Model.TicketsPerDev <= 5))
                 {
-                    <div class="col-md-4">
+                    <div class="col-lg-4 col-md-6">
                         <div class="info-box bg-success">
                             <span class="info-box-icon"><i class="far fa-thumbs-up"></i></span>
                             <div class="info-box-content">
@@ -130,11 +130,11 @@
                 }
                 else if ((Model.TicketsPerDev > 5) && (Model.TicketsPerDev <= 7))
                 {
-                    <div class="col-md-4">
+                    <div class="col-lg-4 col-md-6">
                         <div class="info-box bg-warning">
                             <span class="info-box-icon"><i class="far fa-thumbs-up"></i></span>
                             <div class="info-box-content">
-                                <span class="info-box-text">Status: Green</span>
+                                <span class="info-box-text">Status: Warning</span>
                                 <span class="info-box-number">@Model.TicketsPerDev</span>
 
                                 <div class="progress">
@@ -151,11 +151,11 @@
                 }
                 else if (Model.TicketsPerDev > 7)
                 {
-                    <div class="col-md-4">
+                    <div class="col-lg-4 col-md-6">
                         <div class="info-box bg-danger">
                             <span class="info-box-icon"><i class="far fa-thumbs-down"></i></span>
                             <div class="info-box-content">
-                                <span class="info-box-text">Status: Green</span>
+                                <span class="info-box-text">Status: Danger</span>
                                 <span class="info-box-number">@Model.TicketsPerDev</span>
 
                                 <div class="progress">
@@ -163,6 +163,70 @@
                                 </div>
                                 <span class="progress-description">
                                     Active Issues per Developer
+                                </span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                }
+
+                @if (Model.ProjPerPM <= 6)
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <div class="info-box bg-success">
+                            <span class="info-box-icon"><i class="far fa-thumbs-up"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Status: Green</span>
+                                <span class="info-box-number">@Model.ProjPerPM</span>
+
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: @Model.ProjPerPMStatusBar"></div>
+                                </div>
+                                <span class="progress-description">
+                                    Active Projects per Project Manager
+                                </span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                }
+                else if (Model.ProjPerPM > 6 && Model.ProjPerPM < 8)
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <div class="info-box bg-warning">
+                            <span class="info-box-icon"><i class="far fa-thumbs-up"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Status: Warning</span>
+                                <span class="info-box-number">@Model.ProjPerPM</span>
+
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: @Model.ProjPerPMStatusBar"></div>
+                                </div>
+                                <span class="progress-description">
+                                    Active Projects per Project Manager
+                                </span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                }
+                else if (Model.ProjPerPM >= 8)
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <div class="info-box bg-danger">
+                            <span class="info-box-icon"><i class="far fa-thumbs-down"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Status: Danger</span>
+                                <span class="info-box-number">@Model.ProjPerPM</span>
+
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: @Model.ProjPerPMStatusBar"></div>
+                                </div>
+                                <span class="progress-description">
+                                    Active Projects per Project Manager
                                 </span>
                             </div>
                             <!-- /.info-box-content -->

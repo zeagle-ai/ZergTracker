@@ -21,10 +21,15 @@ namespace ZergTracker.Controllers
             DashboardViewModel model = new DashboardViewModel();
 
             model.ProjectCount = db.Projects.Count();
-            model.TicketCount = db.Tickets.Count();
+            int inDevTick = db.Tickets.Where(s => s.TicketStatus.Name == "In Development").Count();
+            int newTick = db.Tickets.Where(s => s.TicketStatus.Name == "New").Count();
+            model.TicketCount = (inDevTick + newTick);
             model.UserCount = db.Users.Count();
             int urg = db.Tickets.Where(p => p.TicketPriority.Name == "Urgent").Count();
             model.UrgentTicketCount = urg;
+            model.MedTickCount = db.Tickets.Where(p => p.TicketPriority.Name == "Medium").Count();
+            model.LowTickCount = db.Tickets.Where(p => p.TicketPriority.Name == "Low").Count();
+            model.HighTickCount = db.Tickets.Where(p => p.TicketPriority.Name == "High").Count();
 
             int devUsers = db.Users.Where(u => u.Roles.Any(r => r.RoleId == "c4e1a39e-19a2-45b3-80be-46f9c2fa45ca")).Count();
             if (model.TicketCount != 0 && devUsers != 0)
@@ -37,6 +42,20 @@ namespace ZergTracker.Controllers
             {
                 model.TicketsPerDev = 0;
                 model.TicketsPerDevStatusBar = "0%";
+            }
+
+            int pmUsers = db.Users.Where(u => u.Roles.Any(r => r.RoleId == "f462585d-af2b-4bfb-bed8-7aa5789956e4")).Count();
+
+            if (model.ProjectCount != 0 && pmUsers != 0)
+            {
+                int projPerPM = model.ProjectCount / pmUsers;
+                model.ProjPerPM = projPerPM;
+                model.ProjPerPMStatusBar = (projPerPM * 20) + "%";
+            }
+            else
+            {
+                model.ProjPerPM = 0;
+                model.ProjPerPMStatusBar = "0%";
             }
 
             return View(model);

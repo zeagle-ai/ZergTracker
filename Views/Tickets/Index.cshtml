@@ -70,10 +70,32 @@
                                         @Html.DisplayFor(modelItem => item.OwnerUser.FirstName)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                                        @if (item.TicketPriority.Name == "Low")
+                                        {
+                                            <small class="badge badge-success">@item.TicketPriority.Name</small>
+                                        }
+                                        else if (item.TicketPriority.Name == "Medium")
+                                        {
+                                            <small class="badge badge-light">@item.TicketPriority.Name</small>
+                                        }
+                                        else if (item.TicketPriority.Name == "High")
+                                        {
+                                            <small class="badge badge-dark">@item.TicketPriority.Name</small>
+                                        }
+                                        else if (item.TicketPriority.Name == "Urgent")
+                                        {
+                                            <small class="badge badge-danger">@item.TicketPriority.Name</small>
+                                        }
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.TicketStatus.Name)
+                                        @if (item.TicketStatus.Name == "New")
+                                        {
+                                            <small class="badge badge-danger">@item.TicketStatus.Name</small>
+                                        }
+                                        else if (item.TicketStatus.Name == "In Development")
+                                        {
+                                            <small class="badge badge-warning">@item.TicketStatus.Name</small>
+                                        }
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.TicketType.Name)
