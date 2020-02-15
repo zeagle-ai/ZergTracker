@@ -130,7 +130,7 @@ namespace ZergTracker.Controllers
 
 
         //GET Notifications
-        public ActionResult Notifications()
+        public ActionResult Notification()
         {
             NotificationsViewModel notification = new NotificationsViewModel();
 

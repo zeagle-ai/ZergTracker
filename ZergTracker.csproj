@@ -393,7 +393,7 @@
     <Content Include="Views\Projects\AllProjects.cshtml" />
     <Content Include="Views\Home\NavRoleItems.cshtml" />
     <Content Include="Views\Home\CommentProfilePic.cshtml" />
-    <Content Include="Views\Home\Notifications.cshtml" />
+    <Content Include="Views\Home\Notification.cshtml" />
     <Content Include="Views\Home\Chat.cshtml" />
   </ItemGroup>
   <ItemGroup>
