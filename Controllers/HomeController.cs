@@ -61,6 +61,12 @@ namespace ZergTracker.Controllers
             return View(model);
         }
 
+        //Landing Get
+        public ActionResult Landing()
+        {
+            return View();
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
