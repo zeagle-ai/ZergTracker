@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using ZergTracker.Helper;
 using ZergTracker.Models;
 
 namespace ZergTracker.Controllers
@@ -55,6 +56,7 @@ namespace ZergTracker.Controllers
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
+            UserRolesHelper helper = new UserRolesHelper();
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
@@ -69,6 +71,9 @@ namespace ZergTracker.Controllers
             {
                 HasPassword = HasPassword(),
                 ProfilePic = db.Users.FirstOrDefault(u => u.Id == userId).ProfilePic,
+                FirstName = db.Users.FirstOrDefault(u => u.Id == userId).FirstName,
+                LastName = db.Users.FirstOrDefault(u => u.Id == userId).LastName,
+                Roles = helper.ListUserRoles(userId),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),

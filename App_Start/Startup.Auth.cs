@@ -63,6 +63,9 @@ namespace ZergTracker
             //    ClientId = "",
             //    ClientSecret = ""
             //});
+
+            //Signal R Chat
+            app.MapSignalR();
         }
     }
 }
