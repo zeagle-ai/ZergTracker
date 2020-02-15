@@ -151,7 +151,14 @@
                                     </p>
                                     <p class="text-sm">
                                         Assigned Developer
-                                        <b class="d-block">@Model.AssignedToUser.FirstName @Model.AssignedToUser.LastName</b>
+                                        @if (Model.AssignedToUserId != null)
+                                        {
+                                            <b class="d-block">@Model.AssignedToUser.FirstName @Model.AssignedToUser.LastName</b>
+                                        }
+                                        else
+                                        {
+                                            <b class="d-block">Unassigned</b>
+                                        }
                                     </p>
                                 </div>
                             </div>
@@ -207,88 +214,89 @@
         <!-- Comments and Attachments -->
         @if (User.Identity.IsAuthenticated)
         {
-            <div class="card card-widget" id="comments">
-                <div class="card-header">
-                    <div class="user-block">
-                        <img class="img-circle" src="~/favicon-32x32.png" alt="Zerg Logo">
-                        <span class="username">Comments For: @Model.Title</span>
-                        <span class="description">Issue Creation: @Model.Created.ToString("MMM dd yyyy")</span>
-                    </div>
-                    <!-- /.user-block -->
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                    </div>
-                    <!-- /.card-tools -->
-                </div>
-                <!-- /.card-header -->
+    <div class="card card-widget" id="comments">
+        <div class="card-header">
+            <div class="user-block">
+                <img class="img-circle" src="~/favicon-32x32.png" alt="Zerg Logo">
+                <span class="username">Comments For: @Model.Title</span>
+                <span class="description">Issue Creation: @Model.Created.ToString("MMM dd yyyy")</span>
+            </div>
+            <!-- /.user-block -->
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+            <!-- /.card-tools -->
+        </div>
+        <!-- /.card-header -->
 
-                @foreach (var comment in Model.TicketComments)
+        @foreach (var comment in Model.TicketComments)
+        {
+
+
+            if (comment.HasPic)
+            {
+                foreach (var pic in Model.TicketAttachments)
                 {
-                    <div class="card-body">
-
-                        @if (comment.HasPic)
-                        {
-                            foreach (var pic in Model.TicketAttachments)
-                            {
-                                if (comment.Id == pic.CommentId)
-                                {
-                                    <img class="img-fluid pad" src="@pic.FilePath" alt="Comment Attachment">
-
-                                }
-                            }
-                        }
-                    </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer card-comments">
-                        <div class="card-comment">
-                            <!-- User image -->
-                            <img class="img-circle img-sm" src="@comment.User.ProfilePic" alt="User Image">
-
-                            <div class="comment-text">
-                                <span class="username">
-                                    @comment.User.FirstName @comment.User.LastName
-                                    <span class="text-muted float-right">@comment.Created.ToString("MM/dd/yyyy h:mm tt")</span>
-                                </span><!-- /.username -->
-                                @comment.Comment
-                            </div>
-                            <!-- /.comment-text -->
-                        </div>
-                        <!-- /.card-comment -->
-                    </div>
-                    <!-- /.card-footer/comments -->
-                }
-                <div class="card-footer">
-                    @using (Html.BeginForm("AddCommentAttachment", "TicketComments", new { TicketId = Model.Id }, FormMethod.Post, new { role = "form", enctype = "Multipart/form-data" }))
+                    if (comment.Id == pic.CommentId)
                     {
-                        @Html.AntiForgeryToken()
-                        @Html.Hidden("TicketId", Model.Id)
-
-                        <div class="row">
-                            <div class="col-12">
-                                @Html.Action("CommentProfilePic", "Home")
-                                <div class="img-push">
-                                    @Html.TextArea("Comment", new { @class = "form-control", placeholder = "Leave comment here...", rows = "2" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-9">
-                                <img class="img-fluid pad padded-top align-content-center" id="preview" style="max-height: 150px;" />
-                            </div>
-                            <div class="col-3">
-                                <input name="image" type="file" class="form-control" id="fileUpload" style="display: none;" onchange="loadFile(event)" />
-                                <div class="btn-group padded-top">
-                                    <a class="btn btn-primary" onclick="clicker()"><i class="fas fa-image fa-2x" style="color: white; cursor: pointer;"></i></a>
-                                    <input type="submit" value="Comment" class="btn btn-primary" />
-                                </div>
-                            </div>
+                        <div class="card-body">
+                            <img class="img-fluid pad" src="@pic.FilePath" alt="Comment Attachment">
                         </div>
                     }
+                }
+            }
+
+            <!-- /.card-body -->
+            <div class="card-footer card-comments">
+                <div class="card-comment">
+                    <!-- User image -->
+                    <img class="img-circle img-sm" src="@comment.User.ProfilePic" alt="User Image">
+
+                    <div class="comment-text">
+                        <span class="username">
+                            @comment.User.FirstName @comment.User.LastName
+                            <span class="text-muted float-right">@comment.Created.ToString("MM/dd/yyyy h:mm tt")</span>
+                        </span><!-- /.username -->
+                        @comment.Comment
+                    </div>
+                    <!-- /.comment-text -->
                 </div>
-                <!-- /.card-footer -->
+                <!-- /.card-comment -->
             </div>
+            <!-- /.card-footer/comments -->
+        }
+        <div class="card-footer">
+            @using (Html.BeginForm("AddCommentAttachment", "TicketComments", new { TicketId = Model.Id }, FormMethod.Post, new { role = "form", enctype = "Multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("TicketId", Model.Id)
+
+                <div class="row">
+                    <div class="col-12">
+                        @Html.Action("CommentProfilePic", "Home")
+                        <div class="img-push">
+                            @Html.TextArea("Comment", new { @class = "form-control", placeholder = "Leave comment here...", rows = "2" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-9">
+                        <img class="img-fluid pad padded-top align-content-center" id="preview" style="max-height: 150px;" />
+                    </div>
+                    <div class="col-3">
+                        <input name="image" type="file" class="form-control" id="fileUpload" style="display: none;" onchange="loadFile(event)" />
+                        <div class="btn-group padded-top">
+                            <a class="btn btn-primary" onclick="clicker()"><i class="fas fa-image fa-2x" style="color: white; cursor: pointer;"></i></a>
+                            <input type="submit" value="Comment" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <!-- /.card-footer -->
+    </div>
             <!-- /.card -->
         }
         else

@@ -81,6 +81,8 @@ namespace ZergTracker.Helper
             ApplicationDbContext db = new ApplicationDbContext();
             TicketNotification notif = new TicketNotification();
 
+            notif.TicketId = comment.TicketId;
+
             if (comment.Comment != null)
             {
                 var ticket = db.Tickets.Find(comment.TicketId);
@@ -96,12 +98,12 @@ namespace ZergTracker.Helper
                 notif.NotifType = "Low";
                 if (comment.HasPic)
                 {
-                    notif.NotifBody = $"Comments and Attachments have been added to {ticket.Title} with ID: {ticket.Id}";
+                    notif.NotifBody = $"Comments/Pics added to {ticket.Title}";
                     GenerateNotif(notif);
                 }
                 else
                 {
-                    notif.NotifBody = $"Comments have been added to {ticket.Title} with ID: {ticket.Id}";
+                    notif.NotifBody = $"Comments added to {ticket.Title}";
                     GenerateNotif(notif);
                 }
             }
