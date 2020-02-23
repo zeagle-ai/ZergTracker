@@ -3,6 +3,21 @@
     margin-right: 50px;
 }
 
-.padded-top{
+.padded-top {
     padding-top: 15px;
+}
+
+.gapp {
+    padding-top: 10px;
+}
+
+.custom-logo {
+    -webkit-animation: wowzers 4s linear infinite;
+    -moz-animation: wowzers 4s linear infinite;
+    animation: wowzers 4s linear infinite;
+}
+
+@keyframes wowzers {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(360deg); }
 }
