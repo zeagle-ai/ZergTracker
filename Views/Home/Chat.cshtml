@@ -4,43 +4,68 @@
     ViewBag.Title = "Chat";
 }
 
-<!-- DIRECT CHAT -->
-<div class="container">
-    <h2>You may only see the messages from the time you open this forward. Update coming soon to fix this.</h2>
-    <div class="card direct-chat direct-chat-primary">
-        <div class="card-header">
-            <h3 class="card-title">Group Chat</h3>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Zerg Tracker</a></li>
+                    <li class="breadcrumb-item active">Group Chat</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
 
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
-            </div>
-        </div>
-        <!-- /.card-header -->
-        <div class="card-body">
-            <!-- Conversations are loaded here -->
-            <div class="direct-chat-messages" id="discussion">
-            </div>
-            <!--/.direct-chat-messages-->
-        </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
-            <form action="#" method="post">
-                <div class="input-group">
-                    <input type="text" name="message" id="message" placeholder="Type Message ..." class="form-control">
-                    <span class="input-group-append">
-                        <button type="button" class="btn btn-primary" id="sendmessage">Send</button>
-                    </span>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper padded-top">
+    <!-- Main content -->
+    <section class="content">
+        <div class="custom-container">
+            <!-- DIRECT CHAT -->
+            <div class="padded-top h-100">
+                <div class="card direct-chat direct-chat-primary">
+                    <div class="card-header bg-primary">
+                        <h3 class="card-title">Group Chat</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <!-- Conversations are loaded here -->
+                        <div class="direct-chat-messages" id="discussion">
+                        </div>
+                        <!--/.direct-chat-messages-->
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <form action="#" method="post">
+                            <div class="input-group">
+                                <input type="text" name="message" id="message" placeholder="Type Message ..." class="form-control">
+                                <span class="input-group-append">
+                                    <button type="button" class="btn btn-primary" id="sendmessage">Send</button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card-footer-->
                 </div>
-            </form>
+                <h5>You may only see the messages from the time you open this forward. Update coming soon to fix this.</h5>
+            </div>
+
+            <input type="hidden" id="displayname" value="@Model.UserFullName" />
+            <input type="hidden" id="pic" value="@Model.User.ProfilePic" />
+            <!--/.direct-chat -->
         </div>
-        <!-- /.card-footer-->
-    </div>
+    </section>
 </div>
-<input type="hidden" id="displayname" value="@Model.UserFullName" />
-<input type="hidden" id="pic" value="@Model.User.ProfilePic" />
-<!--/.direct-chat -->
+
 @section scripts {
     <!--Script references. -->
     <!--The jQuery library is required and is referenced by default in _Layout.cshtml. -->
@@ -50,65 +75,62 @@
     <script src="~/signalr/hubs"></script>
     <!--SignalR script to update the chat page and send messages.-->
     <script>
-        $(function () {
-            // Reference the auto-generated proxy for the hub.
-            var chat = $.connection.chatHub;
-            var senderName = "@Model.UserFullName";
+    $(function () {
+        // Reference the auto-generated proxy for the hub.
+        var chat = $.connection.chatHub;
+        var senderName = "@Model.UserFullName";
 
-            // Create a function that the hub can call back to display messages.
-            chat.client.addNewMessageToPage = function (name, message, pic) {
-                // Add the message to the page.
-                if (name == senderName) {
-                    $('#discussion').append(
-                        `<div class="direct-chat-msg right">
-                            <div class="direct-chat-infos clearfix">
-                                <span class="direct-chat-name float-right">${htmlEncode(name)}</span>
-                                <span class="direct-chat-timestamp float-left">JS Dates Suck</span>
-                            </div>
-                            <img class="direct-chat-img" src="${pic}" alt="message user image">
-                            <div class="direct-chat-text">
-                                ${htmlEncode(message)}
-                            </div>
-                        </div>`
-                    );
-                }
-                else
-                {
-                    $('#discussion').append(
-                        `<div class="direct-chat-msg">
-                            <div class="direct-chat-infos clearfix">
-                                <span class="direct-chat-name float-left">${htmlEncode(name)}</span>
-                                <span class="direct-chat-timestamp float-right">JS Dates Suck</span>
-                            </div>
-                            <img class="direct-chat-img" src="${pic}" alt="message user image">
-                            <div class="direct-chat-text">
-                                ${htmlEncode(message)}
-                            </div>
-                        </div>`
-                    );
-                }
+        // Create a function that the hub can call back to display messages.
+        chat.client.addNewMessageToPage = function (name, message, pic) {
+            // Add the message to the page.
+            if (name == senderName) {
+                $('#discussion').append(
+                    `<div class="direct-chat-msg right">
+                        <div class="direct-chat-infos clearfix">
+                            <span class="direct-chat-name float-right">${htmlEncode(name)}</span>
+                            <span class="direct-chat-timestamp float-left">JS Dates Suck</span>
+                        </div>
+                        <img class="direct-chat-img" src="${pic}" alt="message user image">
+                        <div class="direct-chat-text">
+                            ${htmlEncode(message)}
+                        </div>
+                    </div>`
+                );
+            }
+            else
+            {
+                $('#discussion').append(
+                    `<div class="direct-chat-msg">
+                        <div class="direct-chat-infos clearfix">
+                            <span class="direct-chat-name float-left">${htmlEncode(name)}</span>
+                            <span class="direct-chat-timestamp float-right">JS Dates Suck</span>
+                        </div>
+                        <img class="direct-chat-img" src="${pic}" alt="message user image">
+                        <div class="direct-chat-text">
+                            ${htmlEncode(message)}
+                        </div>
+                    </div>`
+                );
+            }
 
-            };
-            // Get the user name and store it to prepend to messages.
-            //$('#displayname').val(prompt('Enter your name:', ''));
-            @*$('#displayname').val('@Model.FullName');*@
-            // Set initial focus to message input box.
-            $('#message').focus();
-            // Start the connection.
-            $.connection.hub.start().done(function () {
-                $('#sendmessage').click(function () {
-                    // Call the Send method on the hub.
-                    chat.server.send($('#displayname').val(), $('#message').val(), $('#pic').val());
-                    // Clear text box and reset focus for next comment.
-                    $('#message').val('').focus();
-                });
+        };
+        // Set initial focus to message input box.
+        $('#message').focus();
+        // Start the connection.
+        $.connection.hub.start().done(function () {
+            $('#sendmessage').click(function () {
+                // Call the Send method on the hub.
+                chat.server.send($('#displayname').val(), $('#message').val(), $('#pic').val());
+                // Clear text box and reset focus for next comment.
+                $('#message').val('').focus();
             });
         });
-        // This optional function html-encodes messages for display in the page.
-        function htmlEncode(value) {
-            var encodedValue = $('<div />').text(value).html();
-            return encodedValue;
+    });
+    // This optional function html-encodes messages for display in the page.
+    function htmlEncode(value) {
+        var encodedValue = $('<div />').text(value).html();
+        return encodedValue;
+    }
+            </script>
         }
-    </script>
-}
 
