@@ -186,28 +186,37 @@
         $('#devs').change(function () {
             getData();
         });
+
         function getData() {
             var selectedDev = $("#devs").val();
-                var ticketsSelect = $('#ticketsByProject');
-                ticketsSelect.empty();
-                if (selectedDev != null && selectedDev != '') {
-                    $.getJSON('@Url.Action("GetTicketsByProject", "Home")', { devs: selectedDev })
-                        .done(function (ticketsByProj) {
-                        if (ticketsByProj != null && !jQuery.isEmptyObject(ticketsByProj))
-                        {
+            var ticketsSelect = $('#ticketsByProject');
+            ticketsSelect.empty();
+            if (selectedDev != null && selectedDev != '')
+            {
+                $.getJSON('@Url.Action("GetTicketsByProject", "Home")', { devs: selectedDev })
+                    .done(function (ticketsByProj) {
+                    if (ticketsByProj == null || jQuery.isEmptyObject(ticketsByProj))
+                    {
+                        ticketsSelect.append($('<option/>', {
+                            value: null,
+                            text: "No Unassigned Issues for Project"
+                        }));
+                    }
+                    else if (ticketsByProj != null && !jQuery.isEmptyObject(ticketsByProj))
+                    {
+                        ticketsSelect.append($('<option/>', {
+                            value: null,
+                            text: "Expand to see Dev Project Issues"
+                        }));
+                        $.each(ticketsByProj, function (key,value) {
                             ticketsSelect.append($('<option/>', {
-                                value: null,
-                                text: "Expand to see Dev Project Tickets"
+                                value: value.Value,
+                                text: value.Text
                             }));
-                            $.each(ticketsByProj, function (key,value) {
-                                ticketsSelect.append($('<option/>', {
-                                    value: value.Value,
-                                    text: value.Text
-                                }));
-                            });
-                        }
-                    });
-                }
+                        });
+                    }
+                });
+            }
         }
     </script>
 

@@ -18,5 +18,7 @@ namespace ZergTracker.Models.ViewModels
         public string TicketsPerDevStatusBar { get; set; }
         public int ProjPerPM { get; set; }
         public string ProjPerPMStatusBar { get; set; }
+        public int ProjPerSub { get; set; }
+        public string ProjPerSubStatusBar { get; set; }
     }
 }

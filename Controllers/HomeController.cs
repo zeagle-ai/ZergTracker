@@ -58,6 +58,33 @@ namespace ZergTracker.Controllers
                 model.ProjPerPMStatusBar = "0%";
             }
 
+            int subUsers = db.Users.Where(u => u.Roles.Any(r => r.RoleId == "8c2bd5ce-ec35-4fed-9f41-d10dc71ea44e")).Count();
+
+            if (model.ProjectCount != 0 && subUsers != 0)
+            {
+                int projPerSub = model.ProjectCount / subUsers;
+                model.ProjPerSub = projPerSub;
+                model.ProjPerSubStatusBar = (projPerSub * 15) + "%";
+            }
+            else
+            {
+                model.ProjPerSub = 0;
+                model.ProjPerSubStatusBar = "0%";
+            }
+
+            return View(model);
+        }
+
+        public ActionResult Chat()
+        {
+            ChatViewModel model = new ChatViewModel();
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+
+            model.UserFullName = user.FirstName + " " + user.LastName;
+            model.User = user;
+            
+
             return View(model);
         }
 
@@ -110,7 +137,7 @@ namespace ZergTracker.Controllers
             return View(user);
         }
 
-        [AllowAnonymous] // Change this to only submitters
+        [AllowAnonymous] 
         public ActionResult NavRoleItems()
         {
             var userId = User.Identity.GetUserId();
@@ -197,6 +224,15 @@ namespace ZergTracker.Controllers
             {
                 return View(model);
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

@@ -104,7 +104,7 @@
                     <h3>Key Indicators</h3>
                 </div>
             </div>
-            <!-- Stats Section Start-->
+            <!-- Key Indicators Section Start-->
             <!-- Begin Row-->
             <div class="row">
                 @if ((Model.TicketsPerDev <= 5))
@@ -234,10 +234,132 @@
                         <!-- /.info-box -->
                     </div>
                 }
+                @if (Model.ProjPerSub <= 6)
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <div class="info-box bg-success">
+                            <span class="info-box-icon"><i class="far fa-thumbs-up"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Status: Green</span>
+                                <span class="info-box-number">@Model.ProjPerSub</span>
+
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: @Model.ProjPerSubStatusBar"></div>
+                                </div>
+                                <span class="progress-description">
+                                    Active Projects per Project Manager
+                                </span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                }
+                else if (Model.ProjPerSub > 6 && Model.ProjPerSub < 8)
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <div class="info-box bg-warning">
+                            <span class="info-box-icon"><i class="far fa-thumbs-up"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Status: Warning</span>
+                                <span class="info-box-number">@Model.ProjPerSub</span>
+
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: @Model.ProjPerSubStatusBar"></div>
+                                </div>
+                                <span class="progress-description">
+                                    Active Projects per Project Manager
+                                </span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                }
+                else if (Model.ProjPerSub >= 8)
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <div class="info-box bg-danger">
+                            <span class="info-box-icon"><i class="far fa-thumbs-down"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Status: Danger</span>
+                                <span class="info-box-number">@Model.ProjPerSub</span>
+
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: @Model.ProjPerSubStatusBar"></div>
+                                </div>
+                                <span class="progress-description">
+                                    Active Projects per Project Manager
+                                </span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                }
             </div>
-            <!-- Stats section End -->
+            <!-- Key Indicators section End -->
+            <div class="row">
+                <div class="col-12">
+                    <h3>Issue Statistics</h3>
+                </div>
+            </div>
+            <!-- Stats Sections -->
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <!-- DONUT CHART -->
+                    <div class="card card-danger">
+                        <div class="card-header">
+                            <h3 class="card-title">Issues by Priority</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
         </div>
         <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
 </div><!-- End view wrapper / view -->
+
+@section scripts{
+<script>
+        var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+        var donutData        = {
+          labels: [
+              'Urgent', 
+              'High',
+              'Medium', 
+              'Low', 
+          ],
+          datasets: [
+            {
+              data: [@Model.UrgentTicketCount,@Model.HighTickCount,@Model.MedTickCount,@Model.LowTickCount],
+              backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef'],
+            }
+          ]
+        }
+
+        var donutOptions     = {
+          maintainAspectRatio : false,
+          responsive : true,
+        }
+
+        var donutChart = new Chart(donutChartCanvas, {
+          type: 'doughnut',
+          data: donutData,
+          options: donutOptions      
+    })
+</script>
+    }
