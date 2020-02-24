@@ -6,9 +6,10 @@
 
 <!-- DIRECT CHAT -->
 <div class="container">
+    <h2>You may only see the messages from the time you open this forward. Update coming soon to fix this.</h2>
     <div class="card direct-chat direct-chat-primary">
         <div class="card-header">
-            <h3 class="card-title">Direct Chat</h3>
+            <h3 class="card-title">Group Chat</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -40,14 +41,6 @@
 <input type="hidden" id="displayname" value="@Model.UserFullName" />
 <input type="hidden" id="pic" value="@Model.User.ProfilePic" />
 <!--/.direct-chat -->
-@*<h2>Chat</h2>
-    <div class="container">
-        <input type="text" id="message" />
-        <input type="button" id="sendmessage" value="Send" />
-        <input type="hidden" id="displayname" />
-        <ul id="discussion">
-        </ul>
-    </div>*@
 @section scripts {
     <!--Script references. -->
     <!--The jQuery library is required and is referenced by default in _Layout.cshtml. -->

@@ -30,6 +30,10 @@ namespace ZergTracker.Controllers
             model.MedTickCount = db.Tickets.Where(p => p.TicketPriority.Name == "Medium").Count();
             model.LowTickCount = db.Tickets.Where(p => p.TicketPriority.Name == "Low").Count();
             model.HighTickCount = db.Tickets.Where(p => p.TicketPriority.Name == "High").Count();
+            model.UrgentNew = db.Tickets.Where(p => p.TicketPriority.Name == "Urgent").Where(t => t.TicketStatus.Name == "New").Count();
+            model.UrgentInDev = db.Tickets.Where(p => p.TicketPriority.Name == "Urgent").Where(t => t.TicketStatus.Name == "In Development").Count();
+            model.HighNew = db.Tickets.Where(p => p.TicketPriority.Name == "High").Where(t => t.TicketStatus.Name == "New").Count();
+            model.HighInDev = db.Tickets.Where(p => p.TicketPriority.Name == "High").Where(t => t.TicketStatus.Name == "In Development").Count();
 
             int devUsers = db.Users.Where(u => u.Roles.Any(r => r.RoleId == "c4e1a39e-19a2-45b3-80be-46f9c2fa45ca")).Count();
             if (model.TicketCount != 0 && devUsers != 0)

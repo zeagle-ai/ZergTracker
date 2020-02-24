@@ -20,5 +20,9 @@ namespace ZergTracker.Models.ViewModels
         public string ProjPerPMStatusBar { get; set; }
         public int ProjPerSub { get; set; }
         public string ProjPerSubStatusBar { get; set; }
+        public int UrgentNew { get; set; }
+        public int HighNew { get; set; }
+        public int UrgentInDev { get; set; }
+        public int HighInDev { get; set; }
     }
 }
