@@ -195,19 +195,8 @@
             {
                 $.getJSON('@Url.Action("GetTicketsByProject", "Home")', { devs: selectedDev })
                     .done(function (ticketsByProj) {
-                    if (ticketsByProj == null || jQuery.isEmptyObject(ticketsByProj))
+                    if (ticketsByProj != null && !jQuery.isEmptyObject(ticketsByProj))
                     {
-                        ticketsSelect.append($('<option/>', {
-                            value: null,
-                            text: "No Unassigned Work Items for Project"
-                        }));
-                    }
-                    else if (ticketsByProj != null && !jQuery.isEmptyObject(ticketsByProj))
-                    {
-                        ticketsSelect.append($('<option/>', {
-                            value: null,
-                            text: "Expand Unassigned Developer Items"
-                        }));
                         $.each(ticketsByProj, function (key,value) {
                             ticketsSelect.append($('<option/>', {
                                 value: value.Value,

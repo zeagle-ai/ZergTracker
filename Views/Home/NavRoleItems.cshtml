@@ -69,7 +69,7 @@
                         </div>
                         <div class="row padded-top">
                             <h5>Unassigned Work Items:</h5>
-                            @Html.DropDownListFor(p => p.UnassignedTickets, null, new { @class = "form-control", id = "ticketsByProject" })
+                            @Html.ListBoxFor(p => p.UnassignedTickets, null, new { @class = "form-control", id = "ticketsByProject" })
                         </div>
                     </div>
                     <div class="modal-footer">
