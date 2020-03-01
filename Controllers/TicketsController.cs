@@ -130,11 +130,13 @@ namespace ZergTracker.Controllers
             model.TicketPriority = ticket.TicketPriority;
             model.Title = ticket.Title;
             model.Description = ticket.Description;
+            model.AssignedToUserId = ticket.AssignedToUserId;
             model.AssignedToUser = ticket.AssignedToUser;
             model.Created = ticket.Created;
             model.Updated = ticket.Updated;
             model.TicketComments = ticket.TicketComments;
             model.TicketAttachments = ticket.TicketAttachments;
+            model.TicketHistories = ticket.TicketHistories;
 
             return View(model);
         }
@@ -168,6 +170,7 @@ namespace ZergTracker.Controllers
                 var user = db.Users.Find(userId);
                 ticket.OwnerUserId = userId;
                 ticket.OwnerUser = user;
+                ticket.ProjectId = ProjectId;
                 ticket.ProjectName = db.Projects.SingleOrDefault(n => n.Id == ProjectId)?.Name;
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
@@ -193,12 +196,17 @@ namespace ZergTracker.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
-            ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
+            EditTicketViewModel model = new EditTicketViewModel();
+
+            model.Title = ticket.Title;
+            model.Description = ticket.Description;
+            model.TicketPriorityId = ticket.TicketPriorityId;
+            model.TicketTypeId = ticket.TicketTypeId;
+            model.TicketStatusId = ticket.TicketStatusId;
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
             ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
-            return View(ticket);
+            return View(model);
         }
 
         // POST: Tickets/Edit/5
@@ -206,13 +214,19 @@ namespace ZergTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,Created,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,AssignedToUserId")] Ticket ticket)
+        public ActionResult Edit(EditTicketViewModel model)
         {
+            var ticket = db.Tickets.Find(model.Id);
+
             if (ModelState.IsValid)
             {
-                var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
+                ticket.Title = model.Title;
+                ticket.Description = model.Description;
                 ticket.Updated = DateTimeOffset.Now;
-                db.Entry(ticket).State = EntityState.Modified;
+                ticket.TicketTypeId = model.TicketTypeId;
+                ticket.TicketPriorityId = model.TicketPriorityId;
+                ticket.TicketStatusId = model.TicketStatusId;
+                var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
                 db.SaveChanges();
 
                 HistoryHelper helper = new HistoryHelper();
@@ -222,12 +236,10 @@ namespace ZergTracker.Controllers
                 NotifManager.ManageTicketNotifs(oldTicket, newTicket);
                 return RedirectToAction("Details", "Tickets", new { id = ticket.Id});
             }
-            ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
-            ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
             ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
-            return View(ticket);
+            return View(model);
         }
 
         // GET: Tickets/Delete/5

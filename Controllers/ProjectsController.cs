@@ -21,15 +21,20 @@ namespace ZergTracker.Controllers
         // GET: Projects/Index
         public ActionResult Index()
         {
+
+            ProjectViewModel model = new ProjectViewModel();
+
             if (User.IsInRole("Admin"))
             {
-                return View(db.Projects.ToList());
+                model.Projects = db.Projects.ToList();
+
+                return View(model);
             }
             else if (User.IsInRole("ProjectManager"))
             {
                 var userId = User.Identity.GetUserId();
 
-                var model = db.Projects.Where(p => p.ProjectManagerId == userId).ToList();
+                model.Projects = db.Projects.Where(p => p.ProjectManagerId == userId).ToList();
 
                 return View(model);
             }
@@ -39,12 +44,12 @@ namespace ZergTracker.Controllers
 
                 var user = db.Users.Find(userId);
 
-                var model = user.Projects.ToList();
+                model.Projects = user.Projects.ToList();
 
                 return View(model);
             }
 
-                return View(db.Projects.ToList());
+                return View(model);
         }
 
         // Get All Projects
@@ -102,16 +107,24 @@ namespace ZergTracker.Controllers
         // GET: Projects/Details/5
         public ActionResult Details(int? id)
         {
+            ProjectViewModel model = new ProjectViewModel();
+            model.Users = db.Users.Where(p => p.Projects.Any(i => i.Id == id)).ToList();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Project project = db.Projects.Find(id);
+            model.Name = project.Name;
+            model.Decription = project.Decription;
             if (project == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+            if (project.ProjectManagerId != null)
+            {
+                model.ProjectManager = db.Users.Find(project.ProjectManagerId);
+            }
+            return View(model);
         }
 
         // GET: Projects/Create
@@ -127,7 +140,7 @@ namespace ZergTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, ProjectManager")]
-        public ActionResult Create([Bind(Include = "Id,Name,ProjectManagerId")] Project project)
+        public ActionResult Create([Bind(Include = "Id,Name,Decription")] Project project)
         {
             if (ModelState.IsValid)
             {

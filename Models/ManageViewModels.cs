@@ -16,6 +16,12 @@ namespace ZergTracker.Models
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
+
+        [Display(Name = "New First Name")]
+        public string NewFirstName { get; set; }
+
+        [Display(Name = "New Last Name")]
+        public string NewLastName { get; set; }
     }
 
     public class ManageLoginsViewModel

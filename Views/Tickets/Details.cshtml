@@ -10,8 +10,8 @@
             <div class="col-sm-12">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Zerg Tracker</a></li>
-                    <li class="breadcrumb-item">Issues</li>
-                    <li class="breadcrumb-item active">Issue Details</li>
+                    <li class="breadcrumb-item">Work Items</li>
+                    <li class="breadcrumb-item active">Work Items Details</li>
                 </ol>
             </div>
         </div>
@@ -39,7 +39,7 @@
                             <div class="col-12 col-sm-4">
                                 @if (Model.TicketType.Name == "User Interface Issue")
                                 {
-                                    <div class="info-box bg-gradient-blue">
+                                    <div class="info-box bg-gradient-indigo">
                                         <div class="info-box-content">
                                             <span class="info-box-text text-center">@Model.TicketType.Name</span>
                                         </div>
@@ -47,7 +47,7 @@
                                 }
                                 else if (Model.TicketType.Name == "Bug")
                                 {
-                                    <div class="info-box bg-gradient-danger">
+                                    <div class="info-box bg-gradient-indigo">
                                         <div class="info-box-content">
                                             <span class="info-box-text text-center">@Model.TicketType.Name</span>
                                         </div>
@@ -71,7 +71,7 @@
                                 }
                                 else if (Model.TicketType.Name == "Production Fix")
                                 {
-                                    <div class="info-box bg-gradient-orange">
+                                    <div class="info-box bg-gradient-indigo">
                                         <div class="info-box-content">
                                             <span class="info-box-text text-center">@Model.TicketType.Name</span>
                                         </div>
@@ -81,7 +81,7 @@
                             <div class="col-12 col-sm-4">
                                 @if (Model.TicketStatus.Name == "New")
                                 {
-                                    <div class="info-box bg-gradient-lightblue">
+                                    <div class="info-box bg-gradient-primary">
                                         <div class="info-box-content">
                                             <span class="info-box-text text-center">@Model.TicketStatus.Name</span>
                                         </div>
@@ -115,7 +115,7 @@
                                 }
                                 else if (Model.TicketPriority.Name == "High")
                                 {
-                                    <div class="info-box bg-gradient-fuchsia">
+                                    <div class="info-box bg-gradient-teal">
                                         <div class="info-box-content">
                                             <span class="info-box-text text-center">@Model.TicketPriority.Name</span>
                                         </div>
@@ -131,7 +131,7 @@
                                 }
                                 else if (Model.TicketPriority.Name == "Low")
                                 {
-                                    <div class="info-box bg-gradient-success">
+                                    <div class="info-box bg-gradient-teal">
                                         <div class="info-box-content">
                                             <span class="info-box-text text-center">@Model.TicketPriority.Name</span>
                                         </div>
@@ -166,6 +166,7 @@
                     </div>
                     <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
                         <h4>Issue History</h4>
+                        <hr />
                         <!-- History Here -->
                         @foreach (var history in Model.TicketHistories)
                         {
@@ -181,28 +182,12 @@
                                     </div>
                                     <!-- /.user-block -->
                                     <p>
-                                        Old: @history.OldValue
-                                        New: @history.NewValue
+                                        Ticket changed from <b>@history.OldValue</b> to <b>@history.NewValue</b>
                                     </p>
                                     <p>
                                         <a class="link-black text-sm"><i class="fas fa-clock mr-1"></i>@history.Changed</a>
                                     </p>
                                 </div>
-                            }
-                        }
-
-                        <h5 class="mt-5 text-muted">Issue Attachments</h5>
-                        <hr />
-
-                        @foreach (var attachment in Model.TicketAttachments)
-                        {
-                            if (attachment.TicketId == Model.Id)
-                            {
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <a data-toggle="modal" data-target="#@attachment.Id" style="cursor: pointer" class="btn-link text-secondary"><i class="far fa-fw fa-image"></i> @attachment.FilePath.Remove(0, 9)</a>
-                                    </li>
-                                </ul>
                             }
                         }
                     </div>
@@ -307,21 +292,3 @@
     </div>
 </div>
 
-@foreach (var picture in Model.TicketAttachments)
-{
-    <div class="modal fade" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="@picture.Id" style="opacity: 1; padding-top: 50px; margin-top: 50px;">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5>@picture.FilePath.Remove(0, 9)</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <img src="@picture.FilePath" class="img-fluid" />
-                </div>
-            </div>
-        </div>
-    </div>
-}

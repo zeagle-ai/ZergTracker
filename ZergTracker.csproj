@@ -211,9 +211,11 @@
     <Compile Include="Models\TicketStatus.cs" />
     <Compile Include="Models\TicketType.cs" />
     <Compile Include="Models\ViewModels\ChatViewModel.cs" />
+    <Compile Include="Models\ViewModels\EditTicketViewModel.cs" />
     <Compile Include="Models\ViewModels\NotificationsViewModel.cs" />
     <Compile Include="Models\ViewModels\PersonnelViewModel.cs" />
     <Compile Include="Models\ViewModels\DashboardViewModel.cs" />
+    <Compile Include="Models\ViewModels\ProjectViewModel.cs" />
     <Compile Include="Models\ViewModels\TicketViewModel.cs" />
     <Compile Include="ChatHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

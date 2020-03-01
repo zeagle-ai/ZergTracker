@@ -5,10 +5,6 @@
     {
     @Html.AntiForgeryToken()
 
-    
-        <li class="nav-item d-none d-sm-inline-block">
-            @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { @class = "nav-link", title = "Manage" })
-        </li>
         <li class="nav-item d-none d-sm-inline-block"><a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link">Log off</a></li>
     
     }

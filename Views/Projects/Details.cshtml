@@ -1,34 +1,54 @@
-﻿@model ZergTracker.Models.Project
+﻿@model ZergTracker.Models.ViewModels.ProjectViewModel
 
-@{
-    ViewBag.Title = "Details";
-}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Zerg Tracker</a></li>
+                    <li class="breadcrumb-item">Project</li>
+                    <li class="breadcrumb-item active">Project Details</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
 
-<h2>Details</h2>
-
-<div>
-    <h4>Project</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ProjectManagerId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProjectManagerId)
-        </dd>
-
-    </dl>
+<div class="content-wrapper">
+    <div class="custom-container">
+        <div class="row padded-top">
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">@Model.Name</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-text">
+                            <p><b>Description:</b></p>
+                        </div>
+                        <div class="card-text">
+                            @Model.Decription
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Project Members</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            @foreach (var user in Model.Users)
+                            {   
+                                <div class="col-3">
+                                    <img class="img-circle elevation-2 img-fluid" data-toggle="tooltip" title="@user.FirstName @user.LastName" src="@user.ProfilePic" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

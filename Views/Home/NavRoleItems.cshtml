@@ -19,7 +19,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5>Please Select A Project To Add Issue</h5>
+                    <h5>Please Select A Project To Add a Work Item</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -68,7 +68,7 @@
                             @Html.DropDownListFor(p => p.AssignedDev, null, new { @class = "form-control", id = "devs" })
                         </div>
                         <div class="row padded-top">
-                            <h5>Unassigned Issues:</h5>
+                            <h5>Unassigned Work Items:</h5>
                             @Html.DropDownListFor(p => p.UnassignedTickets, null, new { @class = "form-control", id = "ticketsByProject" })
                         </div>
                     </div>

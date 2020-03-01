@@ -56,26 +56,15 @@
 
             @Html.Action("Notification", "Home")
 
-            <!-- SEARCH FORM -->
-            <form class="form-inline ml-3">
-                <div class="input-group input-group-sm">
-                    <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                    <div class="input-group-append">
-                        <button class="btn btn-navbar" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </form>
         </nav>
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="index3.html" class="brand-link">
+            <div class="brand-link">
                 <img src="~/favicon-32x32.png" alt="ZergTracker Logo" class="brand-image img-circle elevation-3 custom-logo" style="opacity: .8">
                 <span class="brand-text font-weight-light">Zerg Tracker</span>
-            </a>
+            </div>
 
             <!-- Sidebar -->
             <div class="sidebar">
@@ -86,7 +75,7 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
-        with font-awesome or any other icon font library -->
+                            with font-awesome or any other icon font library -->
                         <li class="nav-item">
                             <a href="@Url.Action("Index", "Home")" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -107,10 +96,12 @@
                             <a href="@Url.Action("Index", "Tickets")" class="nav-link">
                                 <i class="nav-icon fas fa-clipboard-list"></i>
                                 <p>
-                                    Issues
+                                    Work Items
                                 </p>
                             </a>
                         </li>
+                        @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+                        {
                         <li class="nav-item">
                             <a href="@Url.Action("Personnel", "Roles")" class="nav-link">
                                 <i class="nav-icon fas fa-user-friends"></i>
@@ -119,6 +110,7 @@
                                 </p>
                             </a>
                         </li>
+                        }
                         <li class="nav-item">
                             <a href="@Url.Action("Chat", "Home")" class="nav-link">
                                 <i class="nav-icon fab fa-rocketchat"></i>
@@ -140,7 +132,7 @@
         <footer class="main-footer">
             <strong>Made by Josh Patterson for a better web.</strong>
             <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 0.1
+                <b>Version</b> 0.2.1
             </div>
         </footer>
 
@@ -207,14 +199,14 @@
                     {
                         ticketsSelect.append($('<option/>', {
                             value: null,
-                            text: "No Unassigned Issues for Project"
+                            text: "No Unassigned Work Items for Project"
                         }));
                     }
                     else if (ticketsByProj != null && !jQuery.isEmptyObject(ticketsByProj))
                     {
                         ticketsSelect.append($('<option/>', {
                             value: null,
-                            text: "Expand to see Dev Project Issues"
+                            text: "Expand Unassigned Developer Items"
                         }));
                         $.each(ticketsByProj, function (key,value) {
                             ticketsSelect.append($('<option/>', {

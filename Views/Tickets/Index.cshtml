@@ -10,7 +10,7 @@
             <div class="col-sm-12">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Zerg Tracker</a></li>
-                    <li class="breadcrumb-item active">Issues</li>
+                    <li class="breadcrumb-item active">Work Items</li>
                 </ol>
             </div>
         </div>
@@ -19,13 +19,11 @@
 
 <div class="content-wrapper">
     <div class="custom-container">
-        <h2>Index</h2>
-
-        <div class="row">
+        <div class="row padded-top">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Issues</h3>
+                        <h3 class="card-title">Work Items</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -110,21 +108,26 @@
                                         @Html.DisplayFor(modelItem => item.ProjectName)
                                     </td>
                                     <td>
-                                        <a class="btn btn-primary btn-sm" href="@Url.Action("Details", new { id = item.Id })">
-                                            <i class="fas fa-folder">
-                                            </i>
-                                            View
-                                        </a>
-                                        <a class="btn btn-info btn-sm" href="@Url.Action("Edit", new { id = item.Id })">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                            Edit
-                                        </a>
-                                        <a class="btn btn-danger btn-sm" href="@Url.Action("Delete", new { id = item.Id })">
-                                            <i class="fas fa-trash">
-                                            </i>
-                                            Delete
-                                        </a>
+                                        <div class="btn-group">
+                                            <a class="btn bg-gradient-cyan btn-sm" href="@Url.Action("Details", new { id = item.Id })">
+                                                <i class="fas fa-folder">
+                                                </i>
+                                                View
+                                            </a>
+                                            @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+                                            {
+                                            <a class="btn bg-gradient-indigo btn-sm" href="@Url.Action("Edit", new { id = item.Id })">
+                                                <i class="fas fa-pencil-alt">
+                                                </i>
+                                                Edit
+                                            </a>
+                                            <a class="btn bg-gradient-red btn-sm" href="@Url.Action("Delete", new { id = item.Id })">
+                                                <i class="fas fa-trash">
+                                                </i>
+                                                Delete
+                                            </a>
+                                            }
+                                        </div>
                                     </td>
                                 </tr>
                             }
@@ -136,6 +139,7 @@
         </div>
     </div>
 </div>
+
 @section scripts{
     <!-- DataTables -->
     <script src="~/assets/js/jquery.dataTables.js"></script>

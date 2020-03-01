@@ -14,40 +14,51 @@
 </section>
 
 <div class="content-wrapper">
-    <div class="custom-container">
+    <div class="custom-container padded-top">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">All Projects</h3>
+                <div class="btn-group float-right">
+                    @Html.ActionLink("New Project", "Create", null, new { @class = "btn bg-gradient-indigo btn-sm" })
 
-        <div class="card-body">
-            <table id="user-titles" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Project(s)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
+                    @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
                     {
-                        <tr>
-                            <td>
-                                <p>
-                                    @item.Name
-                                </p>
-                            </td>
-                        </tr>
+                        @Html.ActionLink("My Projects", "Index", "Projects", new { @class = "btn bg-gradient-cyan btn-sm" })
                     }
-                </tbody>
-            </table>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="proj" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Project(s)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <p>
+                                        @item.Name
+                                    </p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
-
     </div>
 </div>
 
-        @section scripts{
-            <!-- DataTables -->
-            <script src="~/assets/js/jquery.dataTables.js"></script>
-            <script src="~/assets/js/dataTables.bootstrap4.js"></script>
-            <script>
-                $(function () {
-                    $("#user-titles").DataTable();
-                });
-            </script>
-        }
+@section scripts{
+    <!-- DataTables -->
+    <script src="~/assets/js/jquery.dataTables.js"></script>
+    <script src="~/assets/js/dataTables.bootstrap4.js"></script>
+    <script>
+        $(function () {
+            $("#proj").DataTable();
+        });
+    </script>
+}

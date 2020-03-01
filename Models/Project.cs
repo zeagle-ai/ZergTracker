@@ -15,6 +15,7 @@ namespace ZergTracker.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string ProjectManagerId { get; set; }
+        public string Decription { get; set; }
 
         public virtual ICollection<Ticket> Tickets { get; set; }
         public virtual ICollection<ApplicationUser> Users { get; set; }
