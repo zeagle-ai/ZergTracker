@@ -9,9 +9,10 @@ namespace ZergTracker.Models.ViewModels
     {
         public string Name { get; set; }
         public string ProjectManagerId { get; set; }
-        public ApplicationUser ProjectManager { get; set; }
+        public ICollection<ApplicationUser> ProjectManager { get; set; }
         public string Decription { get; set; }
         public ICollection<Project> Projects { get; set; }
+        public ICollection<Ticket> Tickets { get; set; }
         public ICollection<ApplicationUser> Users { get; set; }
     }
 }

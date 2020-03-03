@@ -38,9 +38,9 @@
                 <div class="card-header">
                     <div class="card-title">User Preferences</div>
                 </div>
-                <div class="card-body">
-                    @using (Html.BeginForm("ChangeName", "Manage", FormMethod.Post))
-                    {
+                @using (Html.BeginForm("ChangeName", "Manage", FormMethod.Post))
+                {
+                    <div class="card-body">
                         <div class="form-group">
                             <div class="col-md-2">
                                 First Name:
@@ -57,18 +57,22 @@
                                 @Html.EditorFor(n => n.NewLastName, new { htmlAttributes = new { @class = "form-control" } })
                             </div>
                         </div>
-                    }
-                </div>
-                <div class="card-footer">
-                    @if (Model.HasPassword)
-                    {
-                        @Html.ActionLink("Change your password", "ChangePassword", null, new { @class = "btn bg-gradient-indigo float-right" })
-                    }
-                    else
-                    {
-                        @Html.ActionLink("Create", "SetPassword")
-                    }
-                </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="btn-group float-right">
+                            @if (Model.HasPassword)
+                            {
+                                @Html.ActionLink("Change your password", "ChangePassword", null, new { @class = "btn bg-gradient-indigo" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Create", "SetPassword")
+                            }
+                            <button type="submit" class="btn bg-gradient-cyan">Save</button>
+                        </div>
+                    </div>
+                }
+
             </div>
 
                 @*<dt>External Logins:</dt>

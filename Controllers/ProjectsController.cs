@@ -27,7 +27,7 @@ namespace ZergTracker.Controllers
             if (User.IsInRole("Admin"))
             {
                 model.Projects = db.Projects.ToList();
-
+                model.ProjectManager = db.Users.Where(u => u.Roles.Any(r => r.RoleId == "f462585d-af2b-4bfb-bed8-7aa5789956e4")).ToList();
                 return View(model);
             }
             else if (User.IsInRole("ProjectManager"))
@@ -35,7 +35,7 @@ namespace ZergTracker.Controllers
                 var userId = User.Identity.GetUserId();
 
                 model.Projects = db.Projects.Where(p => p.ProjectManagerId == userId).ToList();
-
+                model.ProjectManager = db.Users.Where(u => u.Roles.Any(r => r.RoleId == "f462585d-af2b-4bfb-bed8-7aa5789956e4")).ToList();
                 return View(model);
             }
             else if (User.IsInRole("Developer") || User.IsInRole("Submitter"))
@@ -45,11 +45,12 @@ namespace ZergTracker.Controllers
                 var user = db.Users.Find(userId);
 
                 model.Projects = user.Projects.ToList();
-
+                model.ProjectManager = db.Users.Where(u => u.Roles.Any(r => r.RoleId == "f462585d-af2b-4bfb-bed8-7aa5789956e4")).ToList();
                 return View(model);
             }
 
-                return View(model);
+            model.ProjectManager = db.Users.Where(u => u.Roles.Any(r => r.RoleId == "f462585d-af2b-4bfb-bed8-7aa5789956e4")).ToList();
+            return View(model);
         }
 
         // Get All Projects
@@ -109,6 +110,7 @@ namespace ZergTracker.Controllers
         {
             ProjectViewModel model = new ProjectViewModel();
             model.Users = db.Users.Where(p => p.Projects.Any(i => i.Id == id)).ToList();
+            model.Tickets = db.Tickets.Where(p => p.ProjectId == id).ToList();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -122,7 +124,7 @@ namespace ZergTracker.Controllers
             }
             if (project.ProjectManagerId != null)
             {
-                model.ProjectManager = db.Users.Find(project.ProjectManagerId);
+                model.ProjectManager = db.Users.Where(u => u.Roles.Any(r => r.RoleId == "f462585d-af2b-4bfb-bed8-7aa5789956e4")).ToList();
             }
             return View(model);
         }

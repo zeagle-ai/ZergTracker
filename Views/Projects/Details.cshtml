@@ -21,6 +21,20 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">@Model.Name</div>
+                        <div class="text-muted">
+                            <p class="text-sm">
+                                Project Manager
+                                <b class="d-block">
+                                    @foreach (var pm in Model.ProjectManager)
+                                    {
+                                        if (pm.Id == Model.ProjectManagerId)
+                                        {
+                                            @pm.FirstName @pm.LastName
+                                        }
+                                    }
+                                </b>
+                            </p>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="card-text">
@@ -40,7 +54,7 @@
                     <div class="card-body">
                         <div class="row">
                             @foreach (var user in Model.Users)
-                            {   
+                            {
                                 <div class="col-3">
                                     <img class="img-circle elevation-2 img-fluid" data-toggle="tooltip" title="@user.FirstName @user.LastName" src="@user.ProfilePic" />
                                 </div>
@@ -49,6 +63,123 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Work Items</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="tickets" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Dev Assigned
+                                    </th>
+                                    <th>
+                                        Submitter
+                                    </th>
+                                    <th>
+                                        Priority
+                                    </th>
+                                    <th>
+                                        Status
+                                    </th>
+                                    <th>
+                                        Type
+                                    </th>
+                                    <th>
+                                        Title
+                                    </th>
+                                    <th>
+                                        Created
+                                    </th>
+                                    <th>
+                                        Project Name
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Tickets)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.AssignedToUser.FirstName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.OwnerUser.FirstName)
+                                        </td>
+                                        <td>
+                                            @if (item.TicketPriority.Name == "Low")
+                                            {
+                                                <small class="badge badge-success">@item.TicketPriority.Name</small>
+                                            }
+                                            else if (item.TicketPriority.Name == "Medium")
+                                            {
+                                                <small class="badge badge-light">@item.TicketPriority.Name</small>
+                                            }
+                                            else if (item.TicketPriority.Name == "High")
+                                            {
+                                                <small class="badge badge-dark">@item.TicketPriority.Name</small>
+                                            }
+                                            else if (item.TicketPriority.Name == "Urgent")
+                                            {
+                                                <small class="badge badge-danger">@item.TicketPriority.Name</small>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (item.TicketStatus.Name == "New")
+                                            {
+                                                <small class="badge badge-danger">@item.TicketStatus.Name</small>
+                                            }
+                                            else if (item.TicketStatus.Name == "In Development")
+                                            {
+                                                <small class="badge badge-warning">@item.TicketStatus.Name</small>
+                                            }
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TicketType.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Title)
+                                        </td>
+                                        <td>
+                                            @item.Created.ToString("MMM dd, yyyy")
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ProjectName)
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a class="btn bg-gradient-cyan btn-sm" href="@Url.Action("Details", new { id = item.Id })">
+                                                    <i class="fas fa-folder">
+                                                    </i>
+                                                    View
+                                                </a>
+                                                @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+                                                {
+                                                    <a class="btn bg-gradient-indigo btn-sm" href="@Url.Action("Edit", new { id = item.Id })">
+                                                        <i class="fas fa-pencil-alt">
+                                                        </i>
+                                                        Edit
+                                                    </a>
+                                                    <a class="btn bg-gradient-red btn-sm" href="@Url.Action("Delete", new { id = item.Id })">
+                                                        <i class="fas fa-trash">
+                                                        </i>
+                                                        Delete
+                                                    </a>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
