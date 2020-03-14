@@ -142,6 +142,7 @@ namespace ZergTracker.Controllers
         }
 
         // GET: Tickets/Create
+        [Authorize(Roles = "Submitter, Admin")]
         public ActionResult Create(int ProjectId)
         {
             TicketViewModel model = new TicketViewModel();
